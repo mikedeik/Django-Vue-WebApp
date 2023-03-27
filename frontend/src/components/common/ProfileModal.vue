@@ -7,7 +7,9 @@
   <OverlayPanel ref="op">
     <div class="op-container">
       <template v-for="option in displayedOptions" :key="option">
-        <div class="option">{{ option }}</div>
+        <div class="option" @click="router.push(option.route)">
+          {{ option.text }}
+        </div>
       </template>
     </div>
   </OverlayPanel>
@@ -16,7 +18,9 @@
 <script setup lang="ts">
 import OverlayPanel from "primevue/overlaypanel";
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const op = ref();
 const toggle = (event: unknown) => {
   op.value.toggle(event);
@@ -25,8 +29,34 @@ const toggle = (event: unknown) => {
 //TODO user logged in functionality
 const isGuest = ref(false);
 
-const guestOptions = ["Log In/Sign Up", "FAQ"];
-const userOptions = ["My Profile", "Favorites", "FAQ", "Logout"];
+const guestOptions = [
+  {
+    text: "Log In/Sign Up",
+    route: "/login",
+  },
+  {
+    text: "FAQ",
+    route: "/faq",
+  },
+];
+const userOptions = [
+  {
+    text: "My Profile",
+    route: "/profile",
+  },
+  {
+    text: "Favorites",
+    route: "/favorites",
+  },
+  {
+    text: "FAQ",
+    route: "/faq",
+  },
+  {
+    text: "Logout",
+    route: "/home", //todo logout user and redirect to home
+  },
+];
 
 const displayedOptions = computed(() => {
   if (isGuest.value) {

@@ -27,7 +27,7 @@ import Notification from "./Notification.vue";
 }
 .title {
   color: #75c027;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
 }
 .np-pair {
