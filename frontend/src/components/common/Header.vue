@@ -5,8 +5,8 @@
     </div>
     <div class="title">Explore Nature Like Never Before</div>
     <div class="np-pair">
-      <div class="notification"><Notification></Notification></div>
-      <div class="profile-options"><ProfileModal /></div>
+      <div class="notification"><Notification /></div>
+      <div class="profile-options"><ProfileModal  /></div>
     </div>
   </div>
 </template>
