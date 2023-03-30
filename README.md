@@ -18,3 +18,20 @@ yarn install
 
 Run Server:
 yarn dev
+
+types
+
+poi:
+id,name,categoryID,nomos,perifereia,x,y,image(?),date of creation
+
+category:
+id,name
+
+user:
+id,username,password,role
+
+notification:
+id,text,userId,isRead
+
+saved search:
+id,userId,categoryId[],radius,date of creation
