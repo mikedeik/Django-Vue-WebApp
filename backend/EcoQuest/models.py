@@ -1,5 +1,13 @@
+import time
+from math import radians, cos, sin, asin, sqrt
+
+EARTH_RADIUS_KM = 6371
+
 from django.db import models
+# from django.contrib.gis.db import models as gis_models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.contrib.gis.geos import Point
 # Create your models here.
 
 
@@ -37,6 +45,11 @@ class PointOfInterest(models.Model):
     CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     PerifereiaId = models.ForeignKey(Perifereia, on_delete=models.CASCADE, null=True, blank=True)
     NomosId = models.ForeignKey(Nomos, on_delete=models.CASCADE, null=True, blank=True)
+    Longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    Latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    #TODO connect to another db to be able to use Points
+    # location = gis_models.PointField(default=Point(0, 0))
+    CreatedDate = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.Name
@@ -55,7 +68,38 @@ class SavedSearch(models.Model):
     SavedSearchId = models.BigAutoField(primary_key=True)
     UserId = models.ForeignKey(User, on_delete=models.CASCADE)
     CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
-    Radius = models.FloatField()
+    CenterLatitude = models.DecimalField(max_digits=9, decimal_places=6, default= 0.000000)
+    CenterLongitude = models.DecimalField(max_digits=9, decimal_places=6, default= 0.000000)
+    Radius = models.DecimalField(max_digits=9, decimal_places=6)
+    CreatedDate = models.DateTimeField(default=timezone.now)
+
+    # TODO migh see some use in this
+    def pois_within_radius(self):
+        pois = PointOfInterest.objects.all()
+        center_lat, center_lon = radians(self.center_latitude), radians(self.center_longitude)
+        results = []
+        for poi in pois:
+            poi_lat, poi_lon = radians(poi.latitude), radians(poi.longitude)
+            d_lat, d_lon = poi_lat - center_lat, poi_lon - center_lon
+            a = sin(d_lat / 2) ** 2 + cos(center_lat) * cos(poi_lat) * sin(d_lon / 2) ** 2
+            c = 2 * asin(sqrt(a))
+            distance_km = EARTH_RADIUS_KM * c
+            if distance_km <= self.Radius:
+                results.append(poi)
+        return results
+
+
+class Notification(models.Model):
+    NotificationId = models.BigAutoField(primary_key=True)
+    UserId = models.ForeignKey(User, on_delete=models.CASCADE)
+    PointOfInterestId = models.ForeignKey(PointOfInterest, on_delete=models.CASCADE)
+    Text = models.CharField(max_length=1000)
+    Read = models.BooleanField(default=False)
+    Retrieved = models.BooleanField(default=False)
+    CreatedDate = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.Text
 
 
 

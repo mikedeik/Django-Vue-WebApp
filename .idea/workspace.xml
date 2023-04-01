@@ -5,13 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/EcoQuest/signals.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/Scripts/CheckInside,py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/migrations/0002_nomos_perifereia_and_more.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +27,13 @@
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="OPTIONS">
+      <set>
+        <option value="REBASE" />
+      </set>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -68,7 +82,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="127.0.0.1" />
+      <option name="host" value="192.168.1.67" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
@@ -90,7 +104,8 @@
       <workItem from="1680026397252" duration="818000" />
       <workItem from="1680027298958" duration="1465000" />
       <workItem from="1680028876541" duration="3217000" />
-      <workItem from="1680070925720" duration="5097000" />
+      <workItem from="1680070925720" duration="7652000" />
+      <workItem from="1680346122604" duration="12448000" />
     </task>
     <servers />
   </component>

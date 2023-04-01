@@ -10,3 +10,4 @@ import { initRouter } from "../src/router";
 const router = initRouter();
 const app = createApp(App);
 app.use(router).use(PrimeVue).mount("#app");
+

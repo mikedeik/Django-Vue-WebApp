@@ -6,6 +6,8 @@ cd backend
 Install Packages:
 pip install django
 pip install djangorestframework
+pip install geopy
+sudo apt-get install binutils libproj-dev gdal-bin
 
 Run Server:
 py manage.py runserver
