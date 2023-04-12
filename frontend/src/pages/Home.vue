@@ -8,8 +8,20 @@
         <div class="location">
           <div class="location-title">Location</div>
           <div class="location-input">
-            <input placeholder="Where are you going?" />
+            <InputText placeholder="Where are you going?" v-model="location" />
           </div>
+        </div>
+        <div class="poi-type">
+          <MultiSelect v-model="selectedPois" display="chip" :options="poiOptions" optionLabel="name" placeholder="Τύπος POI"  />
+        </div>
+        <div class="activity-type">
+          <MultiSelect v-model="selectedActivities" display="chip" :options="activityOptions" optionLabel="name" placeholder="Δραστηριότητα" />
+        </div>
+        <div class="more-filters">
+          More Filters
+        </div>
+        <div class="search-icon">
+          <div class="pi pi-search"/>
         </div>
       </div>
       <div class="main-content">
@@ -21,7 +33,33 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import Header from "../components/common/Header.vue";
+import InputText from 'primevue/inputtext';
+import MultiSelect from 'primevue/multiselect';
+import { stringifyExpression } from "@vue/compiler-core";
+
+const poiOptions=ref([{
+  name:'Λίμνες',
+  value:'Limnes'
+},{
+  name:'Παρκα',
+  value:'Parka'
+},])
+
+const selectedPois=ref<Array<{name:string ,value:string}>>([])
+
+const activityOptions=ref([{
+  name:'Πεζοπορία',
+  value:'Pezoporia'
+},{
+  name:'Κύνηγι',
+  value:'Kinigi'
+},])
+
+const selectedActivities=ref<Array<{name:string ,value:string}>>([])
+
+const location=ref("")
 </script>
 
 <style scoped lang="scss">
@@ -41,7 +79,14 @@ import Header from "../components/common/Header.vue";
 }
 .search-bar {
   height: 10%;
+  width:100%;
+  padding:0 10% 5% 10%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+
 }
+
 .main-content {
   height: 90%;
   // background-image: url(../assets/forest.jpg);
@@ -83,6 +128,13 @@ import Header from "../components/common/Header.vue";
     left: 0px;
     filter: brightness(0.8);
     z-index: -1;
+  }
+}
+
+.p-inputtext{
+
+  &:focus-visible {
+    outline: none !important;
   }
 }
 </style>
