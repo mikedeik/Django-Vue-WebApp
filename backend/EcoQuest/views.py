@@ -38,3 +38,30 @@ class NotificationRead(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# List of Pois
+
+class PoIList(APIView):
+    def get(self, request):
+        poi = PointOfInterest.objects.all()
+        serializer = PointOfInterestSerializer(poi, many=True)
+        return Response(serializer.data)
+
+
+# Details of PoI
+
+class PoIDetails(APIView):
+
+    # Define custom function to raise exception if PoI was not found
+    def get_object(self, PoIID):
+        try:
+            return PointOfInterest.objects.get(PointOfInterestId=PoIID)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, PoIID):
+        poi = self.get_object(PoIID)
+        serializer = PointOfInterestSerializer(poi)
+        return Response(serializer.data)
+

@@ -8,7 +8,7 @@ class PointOfInterestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PointOfInterest
-        fields = ['PointOfInterestId', 'Name', 'Category']
+        fields = ['Name', 'CategoryId', 'Longitude', 'Latitude', 'CreatedDate']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -29,6 +29,8 @@ class NotificationPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ['Retrieved']
+
+
 
 
 

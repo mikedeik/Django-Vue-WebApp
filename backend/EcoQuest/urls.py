@@ -1,9 +1,11 @@
 from django.urls import path
-from .views import CategoryList, NotificationsList, NotificationRead
+from .views import CategoryList, NotificationsList, NotificationRead, PoIList, PoIDetails
 
 urlpatterns = [
     path('categories/', CategoryList.as_view()),
     path('notifications/', NotificationsList.as_view()),
     path('notifications/<int:NotificationId>/', NotificationRead.as_view()),
+    path('poi/', PoIList.as_view()),
+    path('poi/<int:PoIID>/', PoIDetails.as_view()),
 ]
 
