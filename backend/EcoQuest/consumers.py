@@ -7,7 +7,9 @@ from .models import Notification
 
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.token = self.scope['url_route']['kwargs']['id']
+        print("trying connection")
+        self.id = self.scope['url_route']['kwargs']['id']
+        print(self.id)
         user = await self.get_user_by_id()
 
         if user is None:
