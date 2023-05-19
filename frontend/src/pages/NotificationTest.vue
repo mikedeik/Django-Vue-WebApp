@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h2>test</h2>
+    <h2>test</h2>
     <ul>
       <li v-for="notification in notifications" :key="notification.id">
         {{ notification.message }}
@@ -11,31 +11,26 @@
 
 <script lang="ts">
 import { defineComponent, reactive, onMounted, onBeforeUnmount } from 'vue';
-import io from 'socket.io-client';
 
 export default defineComponent({
   setup() {
     const notifications: any = reactive([]);
-    let socket: any = null;
+    let socket: WebSocket | null = null;
 
-    const handleNotification = (notification: any) => {
+    const handleNotification = (event: MessageEvent) => {
+      const notification = JSON.parse(event.data);
       notifications.push(notification);
     };
 
     onMounted(() => {
-      const socketUrl = `ws://localhost:8000/ws/notifications`;
-      console.log(socketUrl);
-      socket = io(socketUrl, {
-        query: {
-          id: 1,
-        },
-      });
-      socket.on('notification', handleNotification);
+      const socketUrl = `ws://localhost:8000/ws/notifications/1/`; // Update the URL with the correct ID
+      socket = new WebSocket(socketUrl);
+      socket.addEventListener('message', handleNotification);
     });
 
     onBeforeUnmount(() => {
       if (socket) {
-        socket.disconnect();
+        socket.close();
         socket = null;
       }
     });
