@@ -31,7 +31,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def notify(self, event):
         await self.send(text_data=json.dumps(event['data']))
-
+        # await self.send(text_data=json.dumps({{id: 1, message: test}})
     @database_sync_to_async
     def get_user_by_id(self):
         try:
