@@ -1,3 +1,4 @@
+from asgiref.sync import async_to_sync
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from channels.db import database_sync_to_async
@@ -10,9 +11,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         print("trying connection")
         self.id = self.scope['url_route']['kwargs']['id']
         print(self.id)
+        print(self.channel_layer)
         user = await self.get_user_by_id()
 
         if user is None:
+            print("closing")
             await self.close()
         else:
             self.user = user
@@ -21,9 +24,14 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 self.user_group,
                 self.channel_name
             )
-            print(self.scope['url_route'])
+
             await self.accept()
-            print("connected")
+
+            self.send(text_data=json.dumps({
+                'type': 'connection_established',
+                'message': 'you are connected'
+            }))
+
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -31,7 +39,20 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-    async def notify(self, event):
+    async def receive(self, text_data=None):
+
+        text_data = json.loads(text_data)
+        message = text_data['message']
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.user_group,
+            {
+                'type': 'message',
+                'message': message
+            }
+        )
+
+    async def message(self, event):
         print("it notifies")
         await self.send(text_data=json.dumps(event['data']))
         # await self.send(text_data=json.dumps({{id: 1, message: test}})

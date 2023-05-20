@@ -31,12 +31,13 @@ def create_notification(notification_text, instance):
             channel_layer = get_channel_layer()
             print(channel_layer)
             event = {
-                'type': 'notify',
+                'type': 'message',
                 'data': notification_data
             }
             print("all good here")
+            print(search.UserId.id)
             async_to_sync(channel_layer.group_send)(
-                f"user_{search.UserId}",
+                f"user_{search.UserId.id}",
                 event
             )
     # print(notification)

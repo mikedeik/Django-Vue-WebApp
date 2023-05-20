@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { defineComponent, reactive, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 
 
 export default defineComponent({
@@ -22,7 +22,19 @@ export default defineComponent({
       notifications.push(notification);
     };
 
+    watchEffect(() => {
+      if(socket) {
+      socket.onmessage = (event: any) => {
+        console.log("event occured");
 
+        const notification = JSON.parse(event.data);
+        handleNotification(notification);
+
+
+      };
+
+    }
+    })
 
     onMounted(() => {
 
@@ -32,17 +44,14 @@ export default defineComponent({
 
       if(socket.OPEN){
         console.log("opened connection");
+        console.log(socket.url)
       }
       socket.addEventListener("message", (event) =>{
         console.log("message from server");
         console.log(event.data);
       } )
 
-      socket.onmessage = (event) => {
-        console.log("event occured");
-        const notification = JSON.parse(event.data);
-        handleNotification(notification);
-      };
+
 
       console.log(socket.readyState);
     });
