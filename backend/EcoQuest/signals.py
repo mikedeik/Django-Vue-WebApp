@@ -18,7 +18,8 @@ def create_notification(notification_text, instance):
     saved_searches = SavedSearch.objects.all().filter(CategoryId=instance.CategoryId)
     if saved_searches:
         for search in saved_searches:
-            notification = Notification(UserId=search.UserId, PointOfInterestId=instance,
+            notification = Notification(UserId=search.UserId,
+                                        PointOfInterestId=instance,
                                         Text=notification_text)
             notification.save()
 
@@ -28,12 +29,12 @@ def create_notification(notification_text, instance):
             }
 
             channel_layer = get_channel_layer()
-
+            print(channel_layer)
             event = {
                 'type': 'notify',
                 'data': notification_data
             }
-
+            print("all good here")
             async_to_sync(channel_layer.group_send)(
                 f"user_{search.UserId}",
                 event

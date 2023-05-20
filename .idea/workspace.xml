@@ -5,14 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/NotificationTest.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/EcoQuest/routing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/NewTest.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/consumers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Scripts/CheckInside,py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend/asgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/router.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/NotificationTest.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/NotificationTest.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +31,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Python Script" />
         <option value="Vue Composition API Component" />
       </list>
     </option>
@@ -63,7 +70,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/mike/PycharmProjects/Atlas2",
+    "last_opened_file_path": "/home/mike/PycharmProjects/texlo",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -79,7 +86,12 @@
     ]
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/backend" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Django Server.EcoQuest">
     <configuration name="EcoQuest" type="Python.DjangoServer" factoryName="Django server">
       <module name="texlo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,6 +117,42 @@
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Python tests for EcoQuest.tests.test_chat_consumer" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="texlo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;EcoQuest.tests.test_chat_consumer&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in tests.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="texlo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend/EcoQuest" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/backend/EcoQuest/tests.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Python tests for EcoQuest.tests.test_chat_consumer" />
+        <item itemvalue="Python tests.Python tests in tests.py" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -121,6 +169,7 @@
       <workItem from="1680070925720" duration="7652000" />
       <workItem from="1680346122604" duration="12448000" />
       <workItem from="1684397165571" duration="4855000" />
+      <workItem from="1684591023760" duration="12535000" />
     </task>
     <servers />
   </component>
@@ -148,5 +197,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/texlo$.coverage" NAME=" Coverage Results" MODIFIED="1684597415562" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
   </component>
 </project>

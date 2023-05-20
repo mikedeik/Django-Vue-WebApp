@@ -21,7 +21,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 self.user_group,
                 self.channel_name
             )
+            print(self.scope['url_route'])
             await self.accept()
+            print("connected")
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -30,6 +32,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         )
 
     async def notify(self, event):
+        print("it notifies")
         await self.send(text_data=json.dumps(event['data']))
         # await self.send(text_data=json.dumps({{id: 1, message: test}})
     @database_sync_to_async
