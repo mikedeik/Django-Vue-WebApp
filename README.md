@@ -13,6 +13,10 @@ pip install django
 pip install djangorestframework
 pip install geopy
 sudo apt-get install binutils libproj-dev gdal-bin
+pip install channels
+pip install daphne
+python3 -m pip install channels_redis
+sudo docker run -p [port]:[port] -d redis:5
 
 Run Server:
 py manage.py runserver
