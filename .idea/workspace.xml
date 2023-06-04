@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/templates/admin/change_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_5_23,_4_57_μ_μ__[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_5_23__4_57_____Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/consumers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/NotificationTest.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/NotificationTest.vue" afterDir="false" />
     </list>
@@ -24,6 +29,7 @@
       <list>
         <option value="Python Script" />
         <option value="Vue Composition API Component" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -58,6 +64,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -160,7 +167,9 @@
       <workItem from="1680070925720" duration="7652000" />
       <workItem from="1680346122604" duration="12448000" />
       <workItem from="1684397165571" duration="4855000" />
-      <workItem from="1684591023760" duration="15190000" />
+      <workItem from="1684591023760" duration="15332000" />
+      <workItem from="1684662533030" duration="2927000" />
+      <workItem from="1685864235647" duration="7595000" />
     </task>
     <servers />
   </component>
