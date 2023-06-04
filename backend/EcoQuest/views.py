@@ -11,16 +11,36 @@ from rest_framework import status, permissions, authentication
 
 # Create your views here.
 
+class CreateCategory(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request):
+            if request.user.username != 'admin':
+                return Response({'message': 'Unauthorized'}, status=403)
+            name = request.data.get('name')
+            category = Category.objects.create(Name=name)  
+            return Response({'message': 'Category post created successfully'})  
+        
+        
+
 class CategoryList(APIView):
 
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
+
         categories = Category.objects.all()
         print(categories)
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
+    
 
 
 class NotificationsList(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         user = User.objects.get(id=request.user.id)
         print(user.id)
@@ -30,6 +50,8 @@ class NotificationsList(APIView):
 
 
 class NotificationRead(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
 
     def put(self, request, NotificationId):
         notification = Notification.objects.get(NotificationId=NotificationId)
@@ -43,6 +65,9 @@ class NotificationRead(APIView):
 # List of Pois
 
 class PoIList(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         poi = PointOfInterest.objects.all()
         serializer = PointOfInterestSerializer(poi, many=True)
