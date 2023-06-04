@@ -19,11 +19,26 @@ class CreateCategory(APIView):
     def post(self, request):
         if request.user.username != 'admin':
             return Response({'message': 'Unauthorized'}, status=403)
-        serializer = CategorySerializer(request.data)
+        serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class CreatePoiApi(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if request.user.username != 'admin':
+            return Response({'message': 'Unauthorized'}, status=403)
+        serializer = PointOfInterestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
         
         
 
