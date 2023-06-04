@@ -22,19 +22,16 @@ export default defineComponent({
       notifications.push(notification);
     };
 
-    watchEffect(() => {
-      if(socket) {
-      socket.onmessage = (event: any) => {
-        console.log("event occured");
+    // watchEffect(() => {
+    //   console.log("watch effect runs");
+    //   if(socket) {
+    //   socket.onmessage = (event: any) => {
+    //     console.log("event occured")
+    //
+    //   };
 
-        const notification = JSON.parse(event.data);
-        handleNotification(notification);
-
-
-      };
-
-    }
-    })
+    // }
+    // })
 
     onMounted(() => {
 
@@ -49,6 +46,8 @@ export default defineComponent({
       socket.addEventListener("message", (event) =>{
         console.log("message from server");
         console.log(event.data);
+        const notification = JSON.parse(event.data);
+        handleNotification(notification);
       } )
 
 
