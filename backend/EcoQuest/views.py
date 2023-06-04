@@ -6,27 +6,30 @@ from django.contrib.auth.models import User
 import csv
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions, authentication
+from rest_framework import status, permissions
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
 
 class CreateCategory(APIView):
 
-    permission_classes = [permissions.IsAuthenticated]
-    
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-            if request.user.username != 'admin':
-                return Response({'message': 'Unauthorized'}, status=403)
-            name = request.data.get('name')
-            category = Category.objects.create(Name=name)  
-            return Response({'message': 'Category post created successfully'})  
+        if request.user.username != 'admin':
+            return Response({'message': 'Unauthorized'}, status=403)
+        serializer = CategorySerializer(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
 
 class CategoryList(APIView):
 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
 
@@ -35,11 +38,12 @@ class CategoryList(APIView):
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
     
+    
 
 
 class NotificationsList(APIView):
 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = User.objects.get(id=request.user.id)
@@ -51,7 +55,7 @@ class NotificationsList(APIView):
 
 class NotificationRead(APIView):
 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def put(self, request, NotificationId):
         notification = Notification.objects.get(NotificationId=NotificationId)
@@ -66,8 +70,6 @@ class NotificationRead(APIView):
 
 class PoIList(APIView):
 
-    permission_classes = [permissions.IsAuthenticated]
-
     def get(self, request):
         poi = PointOfInterest.objects.all()
         serializer = PointOfInterestSerializer(poi, many=True)
@@ -78,6 +80,7 @@ class PoIList(APIView):
 
 class PoIDetails(APIView):
 
+    
     # Define custom function to raise exception if PoI was not found
     def get_object(self, PoIID):
         try:
