@@ -6,7 +6,7 @@ urlpatterns = [
     path('post/categories/', CreateCategory.as_view()),
     path('notifications/', NotificationsList.as_view()),
     path('notifications/<int:NotificationId>/', NotificationRead.as_view()),
-    path('create_pois/', CreatePOIsAPIView.as_view()),
+    path('create_pois/', CreatePOIsAPIView.as_view(), name='create_pois'),
     path('post/poi/', CreatePoiApi.as_view()),
     path('poi/', PoIList.as_view()),
 

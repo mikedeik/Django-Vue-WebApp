@@ -1,3 +1,5 @@
+import io
+
 from django.shortcuts import render
 from .models import Category, PointOfInterest, Notification
 from .serializers import PointOfInterestSerializer, CategorySerializer, NotificationListSerializer, \
@@ -8,6 +10,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser,FormParser
+import codecs
 
 
 # Create your views here.
@@ -110,16 +114,27 @@ class PoIDetails(APIView):
 
 
 class CreatePOIsAPIView(APIView):
+
+    parser_classes = [MultiPartParser, FormParser]
+
     def post(self, request):
-        file = request.FILES.get('file')
+
+        file = request.data['myfile']
         if file:
-            if not file.name.endswith('.tsv'):
+            if not file.name.endswith('.tsv') and not file.name.endswith('.csv'):
                 return Response({'error': 'Invalid file format. Only TSV files are allowed.'}, status=400)
-            # Read the TSV file using csv.reader
-            reader = csv.reader(file, delimiter='\t')
+
+
+            # Read the uploaded file data using io.StringIO
+            tsv_data = file.read().decode('utf-8')
+            tsv_file = io.StringIO(tsv_data)
+
+            reader = csv.reader(tsv_file, delimiter='\t')
             pois_to_create = []
             errors = []
             for row_num, row in enumerate(reader, start=1):
+                print(row_num)
+                print(row)
                 if len(row) != 6:
                     errors.append(f"Invalid number of columns at row {row_num}")
                     continue
@@ -137,13 +152,13 @@ class CreatePOIsAPIView(APIView):
                     pois_to_create.append(poi)
                 except Exception as e:
                     errors.append(f"Error creating PointOfInterest at row {row_num}: {str(e)}")
-                if errors:
-                    return Response({'errors': errors}, status=400)
-                else:
-                    # Commit the changes to the database
-                    PointOfInterest.objects.bulk_create(pois_to_create)
-                    created_pois_ids = [poi.PointOfInterestId for poi in pois_to_create]
-                    return Response({'message': 'Points of Interest created successfully', 'created_pois': created_pois_ids})
-
+            if errors:
+                return Response({'errors': errors}, status=400)
+            else:
+                # Commit the changes to the database
+                PointOfInterest.objects.bulk_create(pois_to_create)
+                created_pois_ids = [poi.PointOfInterestId for poi in pois_to_create]
+                return Response({'message': 'Points of Interest created successfully', 'created_pois': created_pois_ids})
+            tsv_file.close()
         else:
             return Response({'error': 'No file provided.'}, status=400)

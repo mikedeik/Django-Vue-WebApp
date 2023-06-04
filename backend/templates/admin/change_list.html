@@ -3,14 +3,24 @@
 {% block content %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
+    function handleSubmit(event) {
+        event.preventDefault();  // Prevent the default form submission
 
-        function handleSubmit(){
-            console.log("submited");
-            const file_input = document.getElementById('myfile');
-            console.log(document.submit_tsv.elements[0].name);
-            console.log(file_input.files[0]);
-            {#axios.post('http://localhost:8000', )#}
-        }
+        const fileInput = document.getElementById('myfile');
+        const formData = new FormData();
+        formData.append('myfile', fileInput.files[0]);
+
+        axios.post('{% url "create_pois" %}', formData)
+            .then(response => {
+                // Redirect to the desired URL
+                window.location.href = 'http://127.0.0.1:8000/admin/EcoQuest/pointofinterest/';
+                alert(response.message);
+            })
+            .catch(error => {
+                // Handle any errors that occur during the form submission
+                console.error(error);
+            });
+    }
     </script>
     <style>
     .add-pois-button {
@@ -29,18 +39,23 @@
     </style>
     <div>
         <!-- Your custom HTML content goes here -->
-        <h2>Add points of interest by tsv</h2>
+        <h2>Add points of interest from tsv</h2>
         <div>
-            <form onsubmit="handleSubmit()" class = "create-pois-form" name="submit_tsv">
+            <form
+                    onsubmit="handleSubmit(event)"
+                    class = "create-pois-form"
+                    method="post"
+                    enctype="multipart/form-data"
+                    action="{% url 'create_pois' %}">
+                {% csrf_token %}
             <label for="myfile">Select a TSV file:</label>
             <input type="file" id="myfile" name="myfile" class="pois-input">
                 <div>
-            <button
+            <input
                 class="add-pois-button"
                 type="submit"
-            >
-                Create PoIs
-            </button>
+
+            />
                     </div>
             </form>
         </div>
