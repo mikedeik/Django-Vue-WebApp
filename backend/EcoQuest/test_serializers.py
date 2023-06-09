@@ -26,7 +26,7 @@ def test_poi_serializer() -> None:
     assert json == jsonexd
 
 @pytest.mark.usefixtures
-def test_cat_serializer() -> None:
+def test_category_serializer() -> None:
     test = CS.Meta.model(CategoryId=120,Name='nature')
     json = JSONRenderer().render(CS(test).data)
     exdata = {"CategoryId":120,"Name":"nature"}
