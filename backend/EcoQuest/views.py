@@ -3,15 +3,22 @@ import io
 from django.shortcuts import render
 from .models import Category, PointOfInterest, Notification
 from .serializers import PointOfInterestSerializer, CategorySerializer, NotificationListSerializer, \
-    NotificationPutSerializer
+    NotificationPutSerializer, RegisterSerializer
 from django.contrib.auth.models import User
 import csv
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser,FormParser
 import codecs
+from rest_framework import generics
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
 
 
 # Create your views here.
