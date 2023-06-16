@@ -7,6 +7,7 @@
 
 BACKEND:
 cd backend
+
 docker-compose up // builds a venv and runs the server
 
 Install Packages:
