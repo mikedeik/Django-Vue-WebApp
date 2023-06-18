@@ -3,7 +3,8 @@
     <div class="header">
       <Header/>
     </div>
-     <div class="login-form">
+    <div class="content">
+    <div class="login-form">
     <form @submit.prevent="handleLogin"
       @submit="handleLogin">
       <h2>Login</h2>
@@ -17,7 +18,8 @@
       </div>
       <button type="submit">Login</button>
     </form>
-  </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -44,7 +46,6 @@ const handleLogin = async () => {
         localStorage.setItem('accessToken', res.access);
         localStorage.setItem('refreshToken', res.refresh);
         router.push({ path: 'home' });
-
       }
   ).catch((e) =>{
     console.log(e.error);
@@ -55,21 +56,34 @@ const handleLogin = async () => {
 
 <style scoped lang="scss">
 
+
 .root{
   display: flex;
   flex-direction: column;
   align-items: center;
    width: 100%;
   height: 100%;
+  //background-color: rgba(2, 4, 14, 60);
 }
 .header {
   width: 100%;
   height: 10%;
-}
 
+}
+.content {
+  width: 100%;
+  height: 90%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../assets/forest.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .login-form {
   max-width: 300px;
-  min-height: 400px;
+  height: 450px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;

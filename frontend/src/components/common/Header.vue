@@ -4,10 +4,19 @@
       <Logo />
     </div>
     <div class="title">Explore Nature Like Never Before</div>
-    <div class="np-pair">
+    <div v-if="isLogged" class="np-pair">
       <div class="notification"><Notification /></div>
       <div class="profile-options"><ProfileModal  /></div>
     </div>
+    <div v-if="!isLogged" class="button-container">
+      <div  class="login-button">
+      <Button
+        @click="handleClick">
+        Σύνδεση
+      </Button>
+    </div>
+    </div>
+
   </div>
 </template>
 
@@ -15,6 +24,23 @@
 import Logo from "./Logo.vue";
 import ProfileModal from "./ProfileModal.vue";
 import Notification from "./Notification.vue";
+import {useRouter} from "vue-router";
+import {ref} from "vue";
+
+
+const getLoggedIn = async () => {
+  const token = await localStorage.getItem('refreshToken');
+  console.log(token);
+  return  token == null
+}
+const isLogged = ref(getLoggedIn());
+
+const router = useRouter();
+const handleClick = () => {
+  router.push({ path: 'login' });
+}
+
+
 </script>
 
 <style scoped lang="scss">
@@ -29,6 +55,19 @@ import Notification from "./Notification.vue";
   color: #75c027;
   font-size: 28px;
   font-weight: bold;
+}
+.button-container {
+  padding: 10px;
+}
+.login-button {
+  background-color: #75c027;
+  padding: 5px;
+  border-radius: 5px;
+  width: 100px;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .np-pair {
   display: flex;

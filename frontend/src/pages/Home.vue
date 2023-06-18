@@ -66,31 +66,32 @@ const location=ref("")
 .home-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction:column;
 }
 
 .header {
-  width: 100%;
+  min-width: 100%;
   height: 10%;
 }
 .content {
   height: 90%;
   width: 100%;
-  overflow: auto;
+  //overflow: auto;
 }
 .search-bar {
   height: 10%;
   width:100%;
-  padding:0 10% 5% 10%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-evenly;
 
 }
 
 .main-content {
   height: 90%;
-  // background-image: url(../assets/forest.jpg);
-  // background-size: cover;
+   //background-image: url(../assets/forest.jpg);
+   //background-size: cover;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
