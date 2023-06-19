@@ -25,21 +25,21 @@ import Logo from "./Logo.vue";
 import ProfileModal from "./ProfileModal.vue";
 import Notification from "./Notification.vue";
 import {useRouter} from "vue-router";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 
-const getLoggedIn = async () => {
-  const token = await localStorage.getItem('refreshToken');
-  console.log(token);
-  return  token == null
-}
-const isLogged = ref(getLoggedIn());
+
+const isLogged = ref(false);
 
 const router = useRouter();
 const handleClick = () => {
   router.push({ path: 'login' });
 }
+onMounted(async () => {
+  const token = await localStorage.getItem('refreshToken');
+  token !== "" ? isLogged.value = true : isLogged.value = false;
 
+});
 
 </script>
 

@@ -7,7 +7,7 @@
   <OverlayPanel ref="op">
     <div class="op-container">
       <template v-for="option in displayedOptions" :key="option">
-        <div class="option" @click="router.push(option.route)">
+        <div class="option" @click="handleClick(option)">
           {{ option.text }}
         </div>
       </template>
@@ -22,6 +22,18 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const op = ref();
+
+const handleClick = (option : any) => {
+
+  console.log(option);
+    if(option.text === "Logout"){
+      localStorage.setItem('accessToken', '');
+      localStorage.setItem('refreshToken', '');
+    }
+    router.push(option.route);
+
+}
+
 const toggle = (event: unknown) => {
   op.value.toggle(event);
 };

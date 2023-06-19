@@ -7,9 +7,7 @@
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LogIn.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LogIn.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/NewTest.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/ProfileModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/ProfileModal.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +169,7 @@
       <workItem from="1686933331136" duration="6061000" />
       <workItem from="1686952328098" duration="640000" />
       <workItem from="1686988851691" duration="3452000" />
-      <workItem from="1687097838904" duration="3956000" />
+      <workItem from="1687097838904" duration="7130000" />
     </task>
     <servers />
   </component>
