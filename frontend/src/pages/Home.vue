@@ -21,7 +21,7 @@
           More Filters
         </div>
         <div class="search-icon">
-          <div class="pi pi-search"/>
+          <div class="pi pi-search" @click="router.push({path: 'pois'})"/>
         </div>
       </div>
       <div class="main-content">
@@ -38,6 +38,9 @@ import Header from "../components/common/Header.vue";
 import InputText from 'primevue/inputtext';
 import MultiSelect from 'primevue/multiselect';
 import { stringifyExpression } from "@vue/compiler-core";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const poiOptions=ref([{
   name:'Λίμνες',

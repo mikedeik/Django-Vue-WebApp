@@ -29,6 +29,7 @@ const handleClick = (option : any) => {
     if(option.text === "Logout"){
       localStorage.setItem('accessToken', '');
       localStorage.setItem('refreshToken', '');
+      console.log('tokens deleted');
     }
     router.push(option.route);
 

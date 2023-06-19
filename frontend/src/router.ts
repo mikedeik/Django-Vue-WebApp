@@ -12,6 +12,7 @@ import Profile from "./pages/Profile.vue";
 import FAQ from "./pages/FAQ.vue";
 import Notification from "./components/common/Notification.vue";
 import NotificationTest from "./pages/NotificationTest.vue";
+import PoiList from "./pages/PoiList.vue";
 export function initRouter(): Router {
   const routes: RouteRecordRaw[] = [
     { path: "/", redirect: "/home" },
@@ -42,6 +43,10 @@ export function initRouter(): Router {
     {
       path: "/notifications",
       component: NotificationTest
+    },
+    {
+      path: "/pois",
+      component: PoiList
     }
   ];
 
