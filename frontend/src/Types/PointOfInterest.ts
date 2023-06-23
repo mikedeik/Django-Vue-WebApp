@@ -1,6 +1,7 @@
 // src/types.ts
 
-interface PointOfInterest {
+export interface PointOfInterest {
+    id: number;
     name: string;
     description: string;
     longitude: number;

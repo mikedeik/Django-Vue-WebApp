@@ -49,7 +49,6 @@
   .map-container {
     width: 80%;
     height: 80vh; /* Adjust the height as needed */
-    margin-left: 50%; /* Adjust the margin as needed */
   }
   </style>
   

@@ -1,17 +1,19 @@
 <template>
-<div class="homepage">
-  <h2>PoiList</h2>
+  <div class="root">
+    <Header/>
+    <div class="homepage">
   <div>
-      <div v-for="poi in pois">
-        {{ poi.Name }} - {{poi.CategoryId}}
-        
-      </div>
-     
+    <h2>PoiList</h2>
+      <CustomCard v-for="poi in mockPoints" :key="poi.id" :poi="poi" />
+
     </div>
     <div class="map-container">
       <Map :points-of-interest="mockPoints" key="map" />
     </div>
 </div>
+
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -22,7 +24,8 @@ import MultiSelect from 'primevue/multiselect';
 import {useRouter} from "vue-router";
 import axios from "axios";
 import Map from "../components/common/Map.vue";
-import PointOfInterest from '../Types/PointOfInterest';
+import {PointOfInterest} from '../Types/PointOfInterest';
+import CustomCard from "../components/CustomCard/CustomCard.vue";
 
 interface Poi {
   name: string;
@@ -31,6 +34,7 @@ interface Poi {
 }
 const mockPoints: PointOfInterest[] = [
   {
+    id: 1,
     name: 'Point of Interest 1',
           description: 'Description 1',
           longitude: 23.737539,
@@ -39,6 +43,7 @@ const mockPoints: PointOfInterest[] = [
           categoryId: 1,
         },
         {
+          id: 2,
           name: 'Point of Interest 2',
           description: 'Description 2',
           longitude: 23.787432,
@@ -47,6 +52,7 @@ const mockPoints: PointOfInterest[] = [
           categoryId: 2,
         },
         {
+          id: 3,
           name: 'Point of Interest 3',
           description: 'Description 3',
           longitude: 23.287432,
