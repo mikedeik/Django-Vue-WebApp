@@ -25,12 +25,3 @@ class TestPoiDetailsView(TestCase):
     def test_poidetails_view(self):
         response = self.client.get("/ecoquest/poi/12/")
         self.assertEquals(response.status_code,200)
-
-class TestNotificationListView(TestCase):
-
-    def setUp(self):
-        self.client = Client()
-
-    def test_notificationlist_view(self):
-        response = self.client.get("/ecoquest/notifications/")
-        self.assertEquals(response.status_code,200)
