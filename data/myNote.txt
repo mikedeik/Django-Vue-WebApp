@@ -1,0 +1,41 @@
+- Create python virtual environment
+	>> python3 -m venv ./myenv
+	
+- Run virtual environment
+	>> source ./myenv/bin/activate
+	
+- Run backend
+	>> python3 manage.py runserver
+	
+- If for some reason it does not run in the venv.
+	Install again django etc
+	
+- Error: 'No module "requests" found.
+	>> python3 -m pip install requests
+	
+- Check for issues
+	python3 manage.py check
+	
+- Run migrations
+	python3 manage.py makemigrations
+	python3 manage.py migrate
+	
+- admin login
+	username: marina
+	password: 1234 
+	marina@mail.com
+	
+- Populate tables 
+	1) admin area (UI of admin - django)
+		in .../admin.py 
+				admin.site.register(table name)
+				
+		now the table is visible on admin page
+	2) django shell (terminal)
+		python manage.py shell
+		
+- Scripts folder should be created at the same level as
+	manage.py.
+	- should contain an empty "__init__.py" file in order for django to recognise the scripts
+	- argument run with the --script-args flag
+		- example python manage.py runscript name_of_script --script-args arg1 arg2 arg3
