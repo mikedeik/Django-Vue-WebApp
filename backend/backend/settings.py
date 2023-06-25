@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'EcoQuest',
     'channels',
-
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

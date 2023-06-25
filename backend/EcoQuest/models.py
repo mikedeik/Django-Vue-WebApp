@@ -45,8 +45,8 @@ class PointOfInterest(models.Model):
     CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     PerifereiaId = models.ForeignKey(Perifereia, on_delete=models.CASCADE, null=True, blank=True)
     NomosId = models.ForeignKey(Nomos, on_delete=models.CASCADE, null=True, blank=True)
-    Longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    Latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    Longitude = models.DecimalField(max_digits=17, decimal_places=15)
+    Latitude = models.DecimalField(max_digits=17, decimal_places=15)
     #TODO connect to another db to be able to use Points
     # location = gis_models.PointField(default=Point(0, 0))
     CreatedDate = models.DateTimeField(default=timezone.now)

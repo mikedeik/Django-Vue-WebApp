@@ -18,7 +18,9 @@ Install Packages:
 5) pip install channels
 6) pip install daphne
 7) python3 -m pip install channels_redis
-
+8) pip install pandas
+9) pip install django-extensions 
+10) pip install geopandas
 pip install djangorestframework-simplejwt
 
 Run Server:
