@@ -41,12 +41,12 @@ class Perifereia(models.Model):
 
 class PointOfInterest(models.Model):
     PointOfInterestId = models.BigAutoField(primary_key=True)
-    Name = models.CharField(max_length=100, unique=True)
+    Name = models.CharField(max_length=100, unique=False)
     CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     PerifereiaId = models.ForeignKey(Perifereia, on_delete=models.CASCADE, null=True, blank=True)
     NomosId = models.ForeignKey(Nomos, on_delete=models.CASCADE, null=True, blank=True)
-    Longitude = models.DecimalField(max_digits=17, decimal_places=15)
-    Latitude = models.DecimalField(max_digits=17, decimal_places=15)
+    Longitude = models.DecimalField(max_digits=18, decimal_places=15)
+    Latitude = models.DecimalField(max_digits=18, decimal_places=15)
     #TODO connect to another db to be able to use Points
     # location = gis_models.PointField(default=Point(0, 0))
     CreatedDate = models.DateTimeField(default=timezone.now)

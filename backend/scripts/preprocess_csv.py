@@ -4,6 +4,7 @@ import os
 import geopandas
 from shapely import wkt
 from EcoQuest.models import Category, Nomos, Perifereia
+from decimal import Decimal
 
 def find_category(filename):
     category = ""
@@ -68,6 +69,8 @@ def create_final_dataframe(df, category_obj):
     new_df['perifereia'] = perifereiaID
     #rearrange order of columns
     new_df = new_df[['name', 'category', 'perifereia', 'nomos', 'longitude', 'latitude']]
+
+    # remove_duplicates(new_df)
     # print(new_df)
     return new_df
 
@@ -155,14 +158,14 @@ def preprocess(file):
     if flag == False:
         for i in range(len(df)):
             point = process_point_coordinate(df.iloc[i]['centroid'])
-            longitude.append(point[0])
-            latitude.append(point[1])
+            longitude.append(Decimal(point[0]))
+            latitude.append(Decimal(point[1]))
         df = df.drop('centroid', axis=1)
     else:
         for i in range(len(df)):
             point = process_point_coordinate(df.iloc[i]['the_geom'])
-            longitude.append(point[0])
-            latitude.append(point[1])
+            longitude.append(Decimal(point[0]))
+            latitude.append(Decimal(point[1]))
     df = df.drop('the_geom', axis=1)
 
     df['longitude'] = longitude
