@@ -165,11 +165,8 @@ class CreatePOIsAPIView(APIView):
                         Longitude=longitude,
                         Latitude=latitude
                     )
-                    print("BEFORE VALIDATION")
                     poi.full_clean()  # Run model field validation
-                    print("AFTER VALIDATION")
                     pois_to_create.append(poi)
-                    print("POI APPENDED@@@@@@@@")
                 except ValidationError as e:
                     error_message = str(e)
                     return render(request, 'myapp/error_template.html', {'error_message': error_message})
