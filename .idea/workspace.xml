@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_6_23,_9_05_μ_μ__[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_6_23__9_05_____Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,6 +171,7 @@
       <workItem from="1687097838904" duration="3956000" />
       <workItem from="1687504570705" duration="1812000" />
       <workItem from="1687763989372" duration="1218000" />
+      <workItem from="1688028114252" duration="393000" />
     </task>
     <servers />
   </component>

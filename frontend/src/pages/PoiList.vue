@@ -93,6 +93,7 @@ try {
 .map-container {
   width: 100%;
   height: 100%;
+  color: #4caf50;
 }
 .poi-list {
   flex: 1;
