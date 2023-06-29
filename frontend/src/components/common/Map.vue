@@ -49,6 +49,7 @@
   .map-container {
     width: 80%;
     height: 80vh; /* Adjust the height as needed */
+    color: #cccccc;
   }
   </style>
   
