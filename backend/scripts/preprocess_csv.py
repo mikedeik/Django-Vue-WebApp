@@ -6,6 +6,7 @@ from shapely import wkt
 from EcoQuest.models import Category, Nomos, Perifereia
 from decimal import Decimal
 
+#this will probably be deleted
 def find_category(filename):
     category = ""
     if filename == "AisthitikaDash.csv":
@@ -40,11 +41,39 @@ def process_point_coordinate(point):
     point = point.split(" ")
     return point
 
+#checks if coordinates are within the distance threshold
+def within_distance_threshold(coords1, coords2):
+    distance_threshold = 0.05
+    point1 = wkt.loads(coords1)
+    point2 = wkt.loads(coords2)
+    distance = point1.distance(point2)
+    return distance <= distance_threshold
+
+#remvoves duplicate data entries based on the difference of longitude and latitude
+def remove_duplicates(gdf, type):
+
+    gdf['coords'] = gdf[type].astype(str)
+
+    # Iterate over the GeoDataFrame to find and remove duplicate entries
+    to_remove = []
+    for i, row in gdf.iterrows():
+        if i not in to_remove:
+            for j, other_row in gdf.iterrows():
+                if j != i and j not in to_remove:
+                    if within_distance_threshold(row['coords'], other_row['coords']):
+                        to_remove.append(j)
+
+    #create a new GeoDataFrame without the duplicate entries
+    gdf_unique = gdf.drop(to_remove)
+
+    #remove the temporary 'coords' column
+    gdf_unique = gdf_unique.drop('coords', axis=1)
+    return gdf_unique
+
 #creates the final dataframe that will be inserted intto the POI model
 def create_final_dataframe(df, category_obj):
     category = [category_obj.CategoryId for i in range(len(df))]
     new_df = df.copy()
-    print(new_df)
 
     nomosID = []
     perifereiaID = []
@@ -70,23 +99,17 @@ def create_final_dataframe(df, category_obj):
     #rearrange order of columns
     new_df = new_df[['name', 'category', 'perifereia', 'nomos', 'longitude', 'latitude']]
 
-    # remove_duplicates(new_df)
-    # print(new_df)
     return new_df
 
 def preprocess(file):
-    print("Hello this is your script!")
-
-    #check if path to directory of data is given
-    print(file)
 
     #find the category corresponding to this file and save it to the database
+    #TO BE CHANGED IN ALL PROBABILITY
     category = find_category(file)
     category_obj, created = Category.objects.get_or_create(Name=category)
 
     #convert csv to dataframe
     df = pd.read_csv(file)
-    print(df.head(3))
 
     column_names = [col for col in df.columns]
 
@@ -98,18 +121,13 @@ def preprocess(file):
 
     #find the column that has the periphery of each data point
     periphery_col = find_column(column_names, "periphery")
-    if periphery_col == None:
-        print("No periphery column. Abort.")
-    # print(periphery_col)
 
     #find the column that has the prefecture of each data point
     if "NOMOS" in column_names:
         prefecture_col = "NOMOS"
     else:
         prefecture_col = find_column(column_names, "prefecture")
-    if prefecture_col == None:
-        print("No prefecture column. Abort.")
-    # print(prefecture_col)
+
 
     #convert to another dataframe only with the needed data
     if periphery_col == None:
@@ -127,32 +145,33 @@ def preprocess(file):
             new_df = df[[name_col, periphery_col, 'the_geom']].copy()
             new_df.rename(columns={name_col: 'name', periphery_col: 'perifereia'}, inplace=True)
 
-    print(new_df.head(2))
     new_df['the_geom'] = geopandas.GeoSeries.from_wkt(new_df["the_geom"])
     gdf = geopandas.GeoDataFrame(new_df, geometry="the_geom")
-    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-    print(gdf.head(2))
     
     ######################################
     
-    gdf = gdf.set_crs(epsg=2100)   #UTM zone 34 (previously 32634)
+    gdf = gdf.set_crs(epsg=2100)   # Greek grid EPSG for geospatial data 
 
     # find what kind of geospatial data we have (POINT, POLYGON/MULTIPOLYGON)
     cell = df.iloc[0]['the_geom']
     flag=False
+    type = "the_geom"
     if "POINT" in cell: 
         gdf['the_geom'] = gdf['the_geom'].to_crs(epsg=4326)    
         flag=True
     else:   # if the_geom contains POLYGON / MULTIPOLYGON find its center
         gdf['centroid'] = gdf.centroid
         gdf['centroid'] = gdf['centroid'].to_crs(epsg=4326) # ESPG: 4326 for longitude and latitude              
-
+        type = "centroid"
     print(gdf.head(2))
     
+    #######################
+    gdf = remove_duplicates(gdf, type)
+
     #convert geodataframe to dataframe
     df = pd.DataFrame(gdf)
 
-    #extract longitude and latitude from the_geom/centroid colunmn
+    #extract longitude and latitude columns from the_geom/centroid colunmn
     longitude = []
     latitude = []
     if flag == False:
@@ -171,11 +190,11 @@ def preprocess(file):
     df['longitude'] = longitude
     df['latitude'] = latitude
     print('---------------------------------------------')
-    print(df.head(3))
 
     #create dataframe consisting of object ids (where appropriate)
     final_df = create_final_dataframe(df, category_obj)
-    print("------------------------END------------------")
+    final_df.reset_index(drop=True, inplace=True)
+
     return final_df
             
     

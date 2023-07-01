@@ -139,14 +139,14 @@ class CreatePOIsAPIView(APIView):
 
             # reader = csv.reader(tsv_file, delimiter='\t')
             print(tsv_file)
+
             df = preprocess(tsv_file)
             pois_to_create = []
             errors = []
-            # for row_num, row in enumerate(reader, start=1):
             #insert data from dataframe produced from the script
             for row_num in range(len(df)):
-                print(row_num)
-                print(df.loc[row_num])
+                print(row_num)#####
+                print(df.loc[row_num])###
                 # if len(row) != 6:
                 #     errors.append(f"Invalid number of columns at row {row_num}")
                 #     continue
@@ -170,13 +170,12 @@ class CreatePOIsAPIView(APIView):
                 except ValidationError as e:
                     error_message = str(e)
                     return render(request, 'myapp/error_template.html', {'error_message': error_message})
-                # except Exception as e:
-                #     errors.append(f"Error creating PointOfInterest at row {row_num}: {str(e)}")
+                except Exception as e:
+                    errors.append(f"Error creating PointOfInterest: {str(e)}")
             if errors:
                 return Response({'errors': errors}, status=400)
             else:
                 # Commit the changes to the database
-                print("BULKINGGGGGGGGGGGGG")
                 PointOfInterest.objects.bulk_create(pois_to_create)
                 created_pois_ids = [poi.PointOfInterestId for poi in pois_to_create]
                 return Response({'message': 'Points of Interest created successfully', 'created_pois': created_pois_ids})

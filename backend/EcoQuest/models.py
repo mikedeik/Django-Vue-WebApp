@@ -41,7 +41,7 @@ class Perifereia(models.Model):
 
 class PointOfInterest(models.Model):
     PointOfInterestId = models.BigAutoField(primary_key=True)
-    Name = models.CharField(max_length=100, unique=False)
+    Name = models.CharField(max_length=250, unique=False)
     CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     PerifereiaId = models.ForeignKey(Perifereia, on_delete=models.CASCADE, null=True, blank=True)
     NomosId = models.ForeignKey(Nomos, on_delete=models.CASCADE, null=True, blank=True)
