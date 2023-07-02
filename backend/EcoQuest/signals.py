@@ -14,8 +14,8 @@ def poi_created(sender, instance, created, **kwargs):
 
 # For every search in the database create a notification
 def create_notification(notification_text, instance):
-
-    saved_searches = SavedSearch.objects.all().filter(CategoryId=instance.CategoryId)
+    categories = instance.Categories.all()
+    saved_searches = SavedSearch.objects.all().filter(Categories__in=categories)
     if saved_searches:
         for search in saved_searches:
             notification = Notification(UserId=search.UserId,
