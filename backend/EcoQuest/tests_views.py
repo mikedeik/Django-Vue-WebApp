@@ -24,7 +24,7 @@ class TestPoiDetailsView(TestCase):
     def setUp(self) -> None:
         self.client = Client()
         categoryid = Category.objects.create(CategoryId=120,Name='nature')
-        self.data = PointOfInterest.objects.create(PointOfInterestId=12,Name='John',CategoryId=categoryid,Longitude=12,Latitude=12)
+        PointOfInterest.objects.create(PointOfInterestId=12,Name='John',CategoryId=categoryid,Longitude=12,Latitude=12)
 
     def test_poidetails_view(self):
         testdata = POIS(PointOfInterest.objects.get(PointOfInterestId=12)).data
