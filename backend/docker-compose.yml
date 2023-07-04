@@ -17,5 +17,9 @@ services:
     networks:
       - mynetwork
 
+  test:
+    build: .
+    command: python3 manage.py test
+
 networks:
   mynetwork:
