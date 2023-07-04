@@ -138,20 +138,19 @@ class CreatePOIsAPIView(APIView):
             tsv_file = io.StringIO(tsv_data)
 
             # reader = csv.reader(tsv_file, delimiter='\t')
-            print(tsv_file)
-
-            df = preprocess(tsv_file)
+            print(tsv_file)##############3
+            print(file.name)###############
+            df = preprocess(tsv_file, file.name)
             pois_to_create = []
             errors = []
             #insert data from dataframe produced from the script
             for row_num in range(len(df)):
-                print(row_num)#####
-                print(df.loc[row_num])###
+                # print(row_num)#####
+                # print(df.loc[row_num])###
                 # if len(row) != 6:
                 #     errors.append(f"Invalid number of columns at row {row_num}")
                 #     continue
                 name = df.loc[row_num, 'name']
-                category_id = df.loc[row_num, 'category']
                 perifereia_id = df.loc[row_num, 'perifereia']
                 nomos_id = df.loc[row_num, 'nomos']
                 longitude = df.loc[row_num, 'longitude']
@@ -159,7 +158,6 @@ class CreatePOIsAPIView(APIView):
                 try:
                     poi = PointOfInterest(
                         Name=name,
-                        CategoryId_id=category_id,
                         PerifereiaId_id=perifereia_id,
                         NomosId_id=nomos_id,
                         Longitude=longitude,
@@ -177,7 +175,21 @@ class CreatePOIsAPIView(APIView):
             else:
                 # Commit the changes to the database
                 PointOfInterest.objects.bulk_create(pois_to_create)
+                
+                for poi in pois_to_create:
+                    poi.save()
+                
+                # Insert category ids for each poi
+                #convert dataframe column to list 
+                category_ids = df['categories'].tolist()
+
                 created_pois_ids = [poi.PointOfInterestId for poi in pois_to_create]
+
+                for poi, pois_category_ids in zip(pois_to_create, category_ids):
+                    categories = Category.objects.filter(CategoryId__in=pois_category_ids)
+
+                    poi.Categories.set(categories.filter(CategoryId__in = pois_category_ids))
+                
                 return Response({'message': 'Points of Interest created successfully', 'created_pois': created_pois_ids})
             tsv_file.close()
         else:
