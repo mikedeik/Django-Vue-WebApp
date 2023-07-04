@@ -5,25 +5,30 @@ import geopandas
 from shapely import wkt
 from EcoQuest.models import Category, Nomos, Perifereia
 from decimal import Decimal
+from io import StringIO
 
 #this will probably be deleted
 def find_category(filename):
-    category = ""
+    categories = []
     if filename == "AisthitikaDash.csv":
-        category = "Αισθητικά Δάση"
+        categories.append("Αισθητικά Δάση")
+        categories.append("Δάση")
     elif filename == "NaturaKaiProstateuomenes.csv":
-        category = "Δίκτυο Natura 2000 και προστατευόμενες περιοχές"
+        categories.append("Δίκτυο Natura 2000")
+        categories.append("Προστατευόμενες περιοχές")
     elif filename == "LimnesElladas.csv":
-        category = "Λίμνες Ελλάδας"
+        categories.append("Λίμνες Ελλάδας")
     elif filename == "EthnikaParka.csv":
-        category = "Εθνικά Πάρκα"
+        categories.append("Εθνικά Πάρκα")
     elif filename == "EthnikoiDrumoi.csv":
-        category = "Εθνικοί Δρυμοί"
+        categories.append("Εθνικοί Δρυμοί")
     elif filename == "KatafugiaAgriasZwhs.csv":
-        category = "Καταφύγια Άγριας ζωής"
+        categories.append("Καταφύγια Άγριας ζωής")
     elif filename == "AktesMeGalaziaShmaia.csv":
-        category = "Ακτές με γαλάζια σημαία"
-    return category
+        categories.append("Ακτές με γαλάζια σημαία")
+        categories.append("Ακτές")
+    print(categories)
+    return categories
 
 def find_column(columns, literal):
     if literal.upper() in columns:
@@ -71,8 +76,9 @@ def remove_duplicates(gdf, type):
     return gdf_unique
 
 #creates the final dataframe that will be inserted intto the POI model
-def create_final_dataframe(df, category_obj):
-    category = [category_obj.CategoryId for i in range(len(df))]
+def create_final_dataframe(df, categoryIDs):
+
+    categories = [categoryIDs for i in range(len(df))]
     new_df = df.copy()
 
     nomosID = []
@@ -93,21 +99,24 @@ def create_final_dataframe(df, category_obj):
             perifereiaID.append(None)
 
     #add category column
-    new_df['category'] = category
+    new_df['categories'] = categories
     new_df['nomos'] = nomosID
     new_df['perifereia'] = perifereiaID
     #rearrange order of columns
-    new_df = new_df[['name', 'category', 'perifereia', 'nomos', 'longitude', 'latitude']]
+    new_df = new_df[['name', 'categories', 'perifereia', 'nomos', 'longitude', 'latitude']]
 
     return new_df
 
-def preprocess(file):
+def preprocess(file, filename):
 
     #find the category corresponding to this file and save it to the database
     #TO BE CHANGED IN ALL PROBABILITY
-    category = find_category(file)
-    category_obj, created = Category.objects.get_or_create(Name=category)
-
+    categories = find_category(filename)
+    categoryIDs = []
+    for category in categories:
+        category_obj, created = Category.objects.get_or_create(Name=category)
+        print(category_obj)
+        categoryIDs.append(category_obj.CategoryId)
     #convert csv to dataframe
     df = pd.read_csv(file)
 
@@ -192,9 +201,8 @@ def preprocess(file):
     print('---------------------------------------------')
 
     #create dataframe consisting of object ids (where appropriate)
-    final_df = create_final_dataframe(df, category_obj)
+    final_df = create_final_dataframe(df, categoryIDs)
     final_df.reset_index(drop=True, inplace=True)
-
     return final_df
             
     
