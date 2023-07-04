@@ -1,5 +1,5 @@
 import io
-
+import pandas as pd
 from django.shortcuts import render
 from .models import Category, PointOfInterest, Notification
 from .serializers import PointOfInterestSerializer, CategorySerializer, NotificationListSerializer, \
@@ -13,7 +13,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser,FormParser
 import codecs
 from rest_framework import generics
-
+from scripts.preprocess_csv import preprocess
+from django.core.exceptions import ValidationError
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -136,20 +137,27 @@ class CreatePOIsAPIView(APIView):
             tsv_data = file.read().decode('utf-8')
             tsv_file = io.StringIO(tsv_data)
 
-            reader = csv.reader(tsv_file, delimiter='\t')
+            # reader = csv.reader(tsv_file, delimiter='\t')
+            print(tsv_file)##############3
+            print(file.name)###############
+            df = preprocess(tsv_file, file.name)
             pois_to_create = []
             errors = []
-            for row_num, row in enumerate(reader, start=1):
-                print(row_num)
-                print(row)
-                if len(row) != 6:
-                    errors.append(f"Invalid number of columns at row {row_num}")
-                    continue
-                name, category_id, perifereia_id, nomos_id, longitude, latitude = row
+            #insert data from dataframe produced from the script
+            for row_num in range(len(df)):
+                # print(row_num)#####
+                # print(df.loc[row_num])###
+                # if len(row) != 6:
+                #     errors.append(f"Invalid number of columns at row {row_num}")
+                #     continue
+                name = df.loc[row_num, 'name']
+                perifereia_id = df.loc[row_num, 'perifereia']
+                nomos_id = df.loc[row_num, 'nomos']
+                longitude = df.loc[row_num, 'longitude']
+                latitude = df.loc[row_num, 'latitude']
                 try:
                     poi = PointOfInterest(
                         Name=name,
-                        CategoryId_id=category_id,
                         PerifereiaId_id=perifereia_id,
                         NomosId_id=nomos_id,
                         Longitude=longitude,
@@ -157,14 +165,31 @@ class CreatePOIsAPIView(APIView):
                     )
                     poi.full_clean()  # Run model field validation
                     pois_to_create.append(poi)
+                except ValidationError as e:
+                    error_message = str(e)
+                    return render(request, 'myapp/error_template.html', {'error_message': error_message})
                 except Exception as e:
-                    errors.append(f"Error creating PointOfInterest at row {row_num}: {str(e)}")
+                    errors.append(f"Error creating PointOfInterest: {str(e)}")
             if errors:
                 return Response({'errors': errors}, status=400)
             else:
                 # Commit the changes to the database
                 PointOfInterest.objects.bulk_create(pois_to_create)
+                
+                for poi in pois_to_create:
+                    poi.save()
+                
+                # Insert category ids for each poi
+                #convert dataframe column to list 
+                category_ids = df['categories'].tolist()
+
                 created_pois_ids = [poi.PointOfInterestId for poi in pois_to_create]
+
+                for poi, pois_category_ids in zip(pois_to_create, category_ids):
+                    categories = Category.objects.filter(CategoryId__in=pois_category_ids)
+
+                    poi.Categories.set(categories.filter(CategoryId__in = pois_category_ids))
+                
                 return Response({'message': 'Points of Interest created successfully', 'created_pois': created_pois_ids})
             tsv_file.close()
         else:

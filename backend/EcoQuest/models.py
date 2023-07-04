@@ -41,12 +41,12 @@ class Perifereia(models.Model):
 
 class PointOfInterest(models.Model):
     PointOfInterestId = models.BigAutoField(primary_key=True)
-    Name = models.CharField(max_length=100, unique=True)
-    CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
+    Name = models.CharField(max_length=250, unique=False)
+    Categories = models.ManyToManyField(Category)
     PerifereiaId = models.ForeignKey(Perifereia, on_delete=models.CASCADE, null=True, blank=True)
     NomosId = models.ForeignKey(Nomos, on_delete=models.CASCADE, null=True, blank=True)
-    Longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    Latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    Longitude = models.DecimalField(max_digits=18, decimal_places=15)
+    Latitude = models.DecimalField(max_digits=18, decimal_places=15)
     #TODO connect to another db to be able to use Points
     # location = gis_models.PointField(default=Point(0, 0))
     CreatedDate = models.DateTimeField(default=timezone.now)
@@ -67,10 +67,10 @@ class PoiPicture(models.Model):
 class SavedSearch(models.Model):
     SavedSearchId = models.BigAutoField(primary_key=True)
     UserId = models.ForeignKey(User, on_delete=models.CASCADE)
-    CategoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
-    CenterLatitude = models.DecimalField(max_digits=9, decimal_places=6, default= 0.000000)
-    CenterLongitude = models.DecimalField(max_digits=9, decimal_places=6, default= 0.000000)
-    Radius = models.DecimalField(max_digits=9, decimal_places=6)
+    Categories = models.ManyToManyField(Category)
+    CenterLatitude = models.DecimalField(max_digits=18, decimal_places=15, default= 0.000000000000000)
+    CenterLongitude = models.DecimalField(max_digits=18, decimal_places=15, default= 0.000000000000000)
+    Radius = models.DecimalField(max_digits=18, decimal_places=15)
     CreatedDate = models.DateTimeField(default=timezone.now)
 
     # TODO migh see some use in this

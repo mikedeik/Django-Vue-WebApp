@@ -7,10 +7,13 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class PointOfInterestSerializer(serializers.ModelSerializer):
-
+    longitude = serializers.DecimalField(max_digits=18, decimal_places=15)
+    latitude = serializers.DecimalField(max_digits=18, decimal_places=15)
+    Categories = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = PointOfInterest
-        fields = ['Name', 'CategoryId', 'Longitude', 'Latitude', 'CreatedDate']
+        fields = '__all__'
+        # fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate']
 
 
 class CategorySerializer(serializers.ModelSerializer):

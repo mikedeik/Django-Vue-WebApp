@@ -1,0 +1,5 @@
+backend/__pycache__/
+backend/backend/__pycache__/
+backend/EcoQuest/__pycache__/
+backend/EcoQuest/migrations/__pycache__/
+backend/scripts/__pycache__
