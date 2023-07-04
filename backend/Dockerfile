@@ -11,11 +11,14 @@ COPY requirements.txt .
 RUN python -m venv venv
 RUN /bin/bash -c "source venv/bin/activate"
 
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Django project code into the container
 COPY . .
+
+# Run migrations
+RUN python manage.py makemigrations
+RUN python manage.py migrate
 
 # Expose the port on which the Django app will run (change if necessary)
 EXPOSE 8000

@@ -8,6 +8,7 @@ from asgiref.sync import async_to_sync
 @receiver(post_save, sender=PointOfInterest)
 def poi_created(sender, instance, created, **kwargs):
     if created:
+        print("running")
         notification_text = f"New POI '{instance.Name}'"
         create_notification(notification_text, instance)
 
@@ -15,6 +16,7 @@ def poi_created(sender, instance, created, **kwargs):
 # For every search in the database create a notification
 def create_notification(notification_text, instance):
     categories = instance.Categories.all()
+    print(categories)
     saved_searches = SavedSearch.objects.all().filter(Categories__in=categories)
     if saved_searches:
         for search in saved_searches:

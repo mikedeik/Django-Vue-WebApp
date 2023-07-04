@@ -50,6 +50,7 @@ class PointOfInterest(models.Model):
     #TODO connect to another db to be able to use Points
     # location = gis_models.PointField(default=Point(0, 0))
     CreatedDate = models.DateTimeField(default=timezone.now)
+    KeyWords = models.CharField(max_length=2000)
 
     def __str__(self):
         return self.Name

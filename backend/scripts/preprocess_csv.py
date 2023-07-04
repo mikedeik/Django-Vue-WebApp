@@ -102,8 +102,10 @@ def create_final_dataframe(df, categoryIDs):
     new_df['categories'] = categories
     new_df['nomos'] = nomosID
     new_df['perifereia'] = perifereiaID
+    keywords = new_df['name'].split(" ")
+    new_df['keyowrds'] = ','.join(keywords)
     #rearrange order of columns
-    new_df = new_df[['name', 'categories', 'perifereia', 'nomos', 'longitude', 'latitude']]
+    new_df = new_df[['name', 'categories', 'perifereia', 'nomos', 'longitude', 'latitude', 'keywords']]
 
     return new_df
 
