@@ -2,7 +2,7 @@ from django.test import TestCase
 from .models import Category, SavedSearch
 from django.contrib.auth.models import User
 from .serializers import PointOfInterestSerializer as POIS
-from Scripts.CheckInside import pois_within_radius
+from scripts.CheckInside import pois_within_radius
 
 class Testpois_within_radius(TestCase):
 
