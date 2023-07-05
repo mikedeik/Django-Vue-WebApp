@@ -11,7 +11,7 @@ class PointOfInterestSerializer(serializers.ModelSerializer):
     class Meta:
         model = PointOfInterest
         fields = '__all__'
-        fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate']
+        fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate', 'KeyWords']
 
 
 class CategorySerializer(serializers.ModelSerializer):

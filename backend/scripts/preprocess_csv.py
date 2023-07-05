@@ -27,7 +27,6 @@ def find_category(filename):
     elif filename == "AktesMeGalaziaShmaia.csv":
         categories.append("Ακτές με γαλάζια σημαία")
         categories.append("Ακτές")
-    print(categories)
     return categories
 
 def find_column(columns, literal):
@@ -83,6 +82,7 @@ def create_final_dataframe(df, categoryIDs):
 
     nomosID = []
     perifereiaID = []
+    keywordsList = []
     column_names = [col for col in df.columns]
     for i in range(len(df)):
         if "nomos" in column_names:
@@ -97,13 +97,20 @@ def create_final_dataframe(df, categoryIDs):
             perifereiaID.append(perifereia_obj.PerifereiaId)
         else:
             perifereiaID.append(None)
+        name = df.iloc[i]['name']   #convention: keywords are extracted from each name
+        new_str = name.replace(',', ' ')
+        new_str = new_str.split(' ')
+        keywords = []
+        for word in new_str:
+            if not word == '': 
+                keywords.append(word)
+        keywordsList.append(','.join(keywords))
 
     #add category column
     new_df['categories'] = categories
     new_df['nomos'] = nomosID
     new_df['perifereia'] = perifereiaID
-    keywords = new_df['name'].split(" ")
-    new_df['keyowrds'] = ','.join(keywords)
+    new_df['keywords'] = keywordsList
     #rearrange order of columns
     new_df = new_df[['name', 'categories', 'perifereia', 'nomos', 'longitude', 'latitude', 'keywords']]
 

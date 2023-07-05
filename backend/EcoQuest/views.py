@@ -137,31 +137,26 @@ class CreatePOIsAPIView(APIView):
             tsv_data = file.read().decode('utf-8')
             tsv_file = io.StringIO(tsv_data)
 
-            # reader = csv.reader(tsv_file, delimiter='\t')
-            print(tsv_file)##############3
-            print(file.name)###############
             df = preprocess(tsv_file, file.name)
             pois_to_create = []
             errors = []
             #insert data from dataframe produced from the script
             for row_num in range(len(df)):
-                # print(row_num)#####
-                # print(df.loc[row_num])###
-                # if len(row) != 6:
-                #     errors.append(f"Invalid number of columns at row {row_num}")
-                #     continue
+
                 name = df.loc[row_num, 'name']
                 perifereia_id = df.loc[row_num, 'perifereia']
                 nomos_id = df.loc[row_num, 'nomos']
                 longitude = df.loc[row_num, 'longitude']
                 latitude = df.loc[row_num, 'latitude']
+                keywords = df.loc[row_num, 'keywords']
                 try:
                     poi = PointOfInterest(
                         Name=name,
                         PerifereiaId_id=perifereia_id,
                         NomosId_id=nomos_id,
                         Longitude=longitude,
-                        Latitude=latitude
+                        Latitude=latitude,
+                        KeyWords=keywords
                     )
                     poi.full_clean()  # Run model field validation
                     pois_to_create.append(poi)
