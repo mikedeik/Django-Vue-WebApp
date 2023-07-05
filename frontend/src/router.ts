@@ -11,6 +11,7 @@ import LogIn from "./pages/LogIn.vue";
 import Profile from "./pages/Profile.vue";
 import FAQ from "./pages/FAQ.vue";
 import Notification from "./components/common/Notification.vue";
+import Register from "./pages/Register.vue";
 import NotificationTest from "./pages/NotificationTest.vue";
 import PoiList from "./pages/PoiList.vue";
 export function initRouter(): Router {
@@ -33,6 +34,10 @@ export function initRouter(): Router {
       component: LogIn,
     },
     {
+      path: "/register",
+      component: Register,
+    },
+    {
       path: "/profile",
       component: Profile,
     },
@@ -42,12 +47,12 @@ export function initRouter(): Router {
     },
     {
       path: "/notifications",
-      component: NotificationTest
+      component: NotificationTest,
     },
     {
       path: "/pois",
-      component: PoiList
-    }
+      component: PoiList,
+    },
   ];
 
   return createRouter({
@@ -55,3 +60,6 @@ export function initRouter(): Router {
     routes,
   });
 }
+//TODO register page
+//TODO page to save search for a user. Center , radius and categories select
+//TODO modal when click on a POI
