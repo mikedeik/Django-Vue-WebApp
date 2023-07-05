@@ -1,8 +1,7 @@
 from django.test import TestCase
 from .serializers import PointOfInterestSerializer as POIS, CategorySerializer as CS, RegisterSerializer as RS, NotificationListSerializer as NLS
 from django.contrib.auth.models import User
-from .models import  Nomos as N, Perifereia as P, Category
-from rest_framework.renderers import JSONRenderer
+from .models import  Nomos as N, Perifereia as P, Category, SavedSearch as SE, PointOfInterest as POI
 
 # Create your tests here.
 
@@ -14,9 +13,9 @@ class TestPOISModelSerializer(TestCase):
 
     def test_serializer(self):
         test = POIS.Meta.model.objects.get(CategoryId=120)
-        json = JSONRenderer().render(POIS(test).data)
-        exdata = {"Name":"John","CategoryId":120,"Longitude":"12.000000","Latitude":"12.000000",'CreatedDate': test.CreatedDate}
-        jsonexd = JSONRenderer().render(exdata)
+        json = POIS(test).data
+        exdata = {"Name":"John","CategoryId":120,"Longitude":"12.000000","Latitude":"12.000000",'CreatedDate':POIS(test).data['CreatedDate']}
+        jsonexd = exdata
         self.assertEquals(json,jsonexd)
 
 class TestCategoryModelSerializer(TestCase):
@@ -26,9 +25,9 @@ class TestCategoryModelSerializer(TestCase):
 
     def test_serializer(self):
         test = CS.Meta.model.objects.get(CategoryId=120)
-        json = JSONRenderer().render(CS(test).data)
+        json = CS(test).data
         exdata = {"CategoryId":120,"Name":"nature"}
-        jsonexd = JSONRenderer().render(exdata)
+        jsonexd = exdata
         self.assertEquals(json,jsonexd)
 
 class TestNotificationListModelSerializer(TestCase):
@@ -41,9 +40,9 @@ class TestNotificationListModelSerializer(TestCase):
 
     def test_serializer(self):
         test = NLS.Meta.model.objects.get(NotificationId=10)
-        json = JSONRenderer().render(NLS(test).data)
+        json = NLS(test).data
         exdata = {"NotificationId":10,"Text":"New notification for poi","Read":False}
-        jsonexd = JSONRenderer().render(exdata)
+        jsonexd = exdata
         self.assertEquals(json,jsonexd)
 
 
@@ -54,7 +53,7 @@ class TestRegisterModelSerializer(TestCase):
 
     def test_serializer(self):
         test = RS.Meta.model.objects.get(id=9)
-        json = JSONRenderer().render(RS(test).data)
+        json = RS(test).data
         exdata = {"id":9,"username":"Geo","email":"goe@yahoo.com","first_name":"George","last_name":"ane"}
-        jsonexd = JSONRenderer().render(exdata)
+        jsonexd = exdata
         self.assertEquals(json,jsonexd)
