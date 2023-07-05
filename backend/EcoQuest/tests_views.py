@@ -7,9 +7,11 @@ class TestPoiListView(TestCase):
 
     def setUp(self) -> None:
         self.client = Client()
-        categoryid = Category.objects.create(CategoryId=120,Name='nature')
-        PointOfInterest.objects.bulk_create([PointOfInterest(PointOfInterestId=12,Name='John',CategoryId=categoryid,Longitude=12,Latitude=12), 
-        PointOfInterest(PointOfInterestId=19,Name='Gianni',CategoryId=categoryid,Longitude=12,Latitude=12) ])
+        category1 = Category.objects.create(CategoryId=12,Name='natura')
+        category2 = Category.objects.create(CategoryId=10,Name='Δάση')
+        pois = PointOfInterest.objects.bulk_create([PointOfInterest(PointOfInterestId=12,Name='John',Longitude=12,Latitude=12), 
+        PointOfInterest(PointOfInterestId=19,Name='Gianni',Longitude=12,Latitude=12) ])
+        pois.pop().Categories.add(category1,category2)
 
     def test_poilist_view(self):
         data = PointOfInterest.objects.all()
@@ -23,8 +25,10 @@ class TestPoiDetailsView(TestCase):
 
     def setUp(self) -> None:
         self.client = Client()
-        categoryid = Category.objects.create(CategoryId=120,Name='nature')
-        PointOfInterest.objects.create(PointOfInterestId=12,Name='John',CategoryId=categoryid,Longitude=12,Latitude=12)
+        category1 = Category.objects.create(CategoryId=1,Name='natura')
+        category2 = Category.objects.create(CategoryId=2,Name='Δάση')
+        poi = PointOfInterest.objects.create(PointOfInterestId=12,Name='John',Longitude=12,Latitude=12)
+        poi.Categories.add(category1,category2)
 
     def test_poidetails_view(self):
         testdata = POIS(PointOfInterest.objects.get(PointOfInterestId=12)).data
