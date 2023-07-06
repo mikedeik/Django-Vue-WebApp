@@ -1,6 +1,10 @@
 <template>
   <div class="poi-card">
-    <img :src="poi.image" :alt="poi.name" class="poi-image" />
+    <img
+      src="https://fastly.picsum.photos/id/949/536/354.jpg?hmac=biBe6mOyyM3zjcsRQcyxfkHTNxHLyMzX2-x9rc-Ef8c"
+      :alt="poi.name"
+      class="poi-image"
+    />
     <div class="poi-details">
       <h3 class="poi-title">{{ poi.name }}</h3>
       <p class="poi-description">{{ poi.description }}</p>
@@ -9,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { PointOfInterest } from '../../Types/PointOfInterest';
+import { defineComponent } from "vue";
+import { PointOfInterest } from "../../Types/PointOfInterest";
 
 export default defineComponent({
   props: {
