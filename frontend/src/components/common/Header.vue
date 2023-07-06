@@ -30,9 +30,9 @@ const handleClick = () => {
   router.push({ path: "login" });
 };
 onMounted(() => {
-  const token = localStorage.getItem("refreshToken");
+  const token:string | null = localStorage.getItem("refreshToken");
   console.log("token", token);
-  if (token !== undefined && token !== "") {
+  if (token !== undefined && token !== "" && token !== null) {
     isLogged.value = true;
   } else {
     isLogged.value = false;

@@ -49,9 +49,17 @@ const handleLogin = async () => {
   loginAuthenticate(data.value)
     .then((res) => {
       console.log(res);
+      if(res.status === 200){
+        console.log(res);
       localStorage.setItem("accessToken", res.access);
       localStorage.setItem("refreshToken", res.refresh);
-      router.push({ path: "home" });
+       router.push({ path: "home" });
+      }else{
+        localStorage.setItem("accessToken", '');
+        localStorage.setItem("refreshToken", '');
+        router.push({ path: "home" });
+      }
+
     })
     .catch((e) => {
       console.log("kik", e.error);

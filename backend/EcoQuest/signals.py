@@ -8,8 +8,20 @@ from asgiref.sync import async_to_sync
 @receiver(post_save, sender=PointOfInterest)
 def poi_created(sender, instance, created, **kwargs):
     if created:
+        instance.save()
         print("running")
+        print("again")
         notification_text = f"New POI '{instance.Name}'"
+        print(instance)
+        print(instance.Categories)
+        categories = instance.Categories.all()
+        poi = PointOfInterest.objects.get(pk=instance.PointOfInterestId)
+
+        new_cats = poi.Categories.all()
+        for category in new_cats:
+            print(category)
+        for cat in categories:
+            print(cat.CategoryId)
         create_notification(notification_text, instance)
 
 
@@ -17,6 +29,8 @@ def poi_created(sender, instance, created, **kwargs):
 def create_notification(notification_text, instance):
     categories = instance.Categories.all()
     print(categories)
+    for item in categories:
+        print(item.CategoryId)
     saved_searches = SavedSearch.objects.all().filter(Categories__in=categories)
     if saved_searches:
         for search in saved_searches:

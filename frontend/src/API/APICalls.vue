@@ -16,9 +16,10 @@ const loginAuthenticate = async (data: {
         },
       }
     );
+    response.data.status = 200;
     return response.data;
   } catch (e: any) {
-    return { error: e.message };
+    return { status:401, error: e.message };
   }
 };
 
