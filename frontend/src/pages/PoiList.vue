@@ -27,7 +27,11 @@
     >
       <div class="container">
         <div class="image-container">
-          <img class="image" :src="selectedPoi?.image" alt="Image" />
+          <img
+            class="image"
+            src="https://fastly.picsum.photos/id/949/536/354.jpg?hmac=biBe6mOyyM3zjcsRQcyxfkHTNxHLyMzX2-x9rc-Ef8c"
+            alt="Image"
+          />
         </div>
         <div class="info-container">
           <h1 class="info-row">{{ selectedPoi?.name }}</h1>
