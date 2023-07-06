@@ -1,79 +1,81 @@
 <template>
-  <div class= "root">
+  <div class="root">
     <div class="header">
-      <Header/>
+      <Header />
     </div>
     <div class="content">
-    <div class="login-form">
-    <form @submit.prevent="handleLogin"
-      @submit="handleLogin">
-      <h2>Login</h2>
-      <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="data.username" required />
+      <div class="login-form">
+        <form @submit.prevent="handleLogin" @submit="handleLogin">
+          <h2>Login</h2>
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" v-model="data.username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              v-model="data.password"
+              required
+            />
+          </div>
+          <button type="submit">Login</button>
+          <div class="d-flex justify-content-center mt-4">
+            <a href="/register">Sign up</a>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="data.password" required />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-
 import { ref } from "vue";
 import Header from "../components/common/Header.vue";
-import {loginAuthenticate} from "../API/APICalls.vue";
-import {useRouter} from "vue-router";
-import InputText from 'primevue/inputtext';
+import { loginAuthenticate } from "../API/APICalls.vue";
+import { useRouter } from "vue-router";
+import InputText from "primevue/inputtext";
 
 const router = useRouter();
 
 const data = ref({
   username: "",
-  password: ""
+  password: "",
 });
 
 const handleLogin = async () => {
   console.log("runs");
-  loginAuthenticate(data.value).then(
-      (res) => {
-        console.log(res);
-        localStorage.setItem('accessToken', res.access);
-        localStorage.setItem('refreshToken', res.refresh);
-        router.push({ path: 'home' });
-      }
-  ).catch((e) =>{
-    console.log(e.error);
-  })
-}
-
+  loginAuthenticate(data.value)
+    .then((res) => {
+      console.log(res);
+      localStorage.setItem("accessToken", res.access);
+      localStorage.setItem("refreshToken", res.refresh);
+      router.push({ path: "home" });
+    })
+    .catch((e) => {
+      console.log("kik", e.error);
+    });
+};
 </script>
 
 <style scoped lang="scss">
-
-
-.root{
+.root {
   display: flex;
   flex-direction: column;
   align-items: center;
-   width: 100%;
+  width: 100%;
   height: 100%;
   //background-color: rgba(2, 4, 14, 60);
 }
 .header {
   width: 100%;
   height: 10%;
-
 }
 .content {
   width: 100%;
   height: 90%;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-image: url(../assets/forest.jpg);
@@ -109,8 +111,8 @@ const handleLogin = async () => {
       font-weight: bold;
     }
 
-    input[type='text'],
-    input[type='password'] {
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 10px;
       font-size: 16px;

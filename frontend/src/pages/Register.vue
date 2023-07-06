@@ -16,9 +16,9 @@
         />
       </div>
       <div class="mb-3">
-        <label for="surname" class="form-label">Surname</label>
+        <label for="surname" class="form-label">Username</label>
         <input
-          v-model="surname"
+          v-model="username"
           type="text"
           class="form-control"
           id="surname"
@@ -35,6 +35,16 @@
           required
         />
       </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          v-model="password"
+          type="password"
+          class="form-control"
+          id="password"
+          required
+        />
+      </div>
       <div v-if="error" class="alert alert-danger" role="alert">
         {{ error }}
       </div>
@@ -47,26 +57,28 @@
 
 <script setup lang="ts">
 import Header from "../components/common/Header.vue";
+import { register } from "../API/APICalls.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 // Define reactive variables using `ref`
 const name = ref("");
-const surname = ref("");
+const username = ref("");
 const email = ref("");
+const password = ref("");
+
 const error = ref("");
 
 // Define the submitForm method
-const submitForm = () => {
-  setTimeout(() => {
-    const backendError = true;
-    if (backendError) {
-      error.value = "An error occurred while submitting the form.";
-    } else {
-      error.value = "";
-      name.value = "";
-      surname.value = "";
-      email.value = "";
-    }
-  }, 1000);
+const submitForm = async () => {
+  const data = {
+    username: username.value,
+    password: password.value,
+    email: email.value,
+  };
+  await register(data).then(() => router.push({ path: "home" }));
 };
 </script>
 

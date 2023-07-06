@@ -6,17 +6,13 @@
     <div class="title">Explore Nature Like Never Before</div>
     <div v-if="isLogged" class="np-pair">
       <div class="notification"><Notification /></div>
-      <div class="profile-options"><ProfileModal  /></div>
+      <div class="profile-options"><ProfileModal /></div>
     </div>
     <div v-if="!isLogged" class="button-container">
-      <div  class="login-button">
-      <Button
-        @click="handleClick">
-        Σύνδεση
-      </Button>
+      <div class="login-button">
+        <Button @click="handleClick"> Σύνδεση </Button>
+      </div>
     </div>
-    </div>
-
   </div>
 </template>
 
@@ -24,23 +20,25 @@
 import Logo from "./Logo.vue";
 import ProfileModal from "./ProfileModal.vue";
 import Notification from "./Notification.vue";
-import {useRouter} from "vue-router";
-import {onMounted, ref} from "vue";
-
-
+import { useRouter } from "vue-router";
+import { onMounted, ref } from "vue";
 
 const isLogged = ref(false);
 
 const router = useRouter();
 const handleClick = () => {
-  router.push({ path: 'login' });
-}
-onMounted(async () => {
-  const token = await localStorage.getItem('refreshToken');
-  token !== "" ? isLogged.value = true : isLogged.value = false;
-
+  router.push({ path: "login" });
+};
+onMounted(() => {
+  const token = localStorage.getItem("refreshToken");
+  console.log("token", token);
+  if (token !== undefined && token !== "") {
+    isLogged.value = true;
+  } else {
+    isLogged.value = false;
+  }
+  console.log("log", isLogged.value);
 });
-
 </script>
 
 <style scoped lang="scss">

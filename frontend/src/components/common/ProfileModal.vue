@@ -23,17 +23,15 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const op = ref();
 
-const handleClick = (option : any) => {
-
+const handleClick = (option: any) => {
   console.log(option);
-    if(option.text === "Logout"){
-      localStorage.setItem('accessToken', '');
-      localStorage.setItem('refreshToken', '');
-      console.log('tokens deleted');
-    }
-    router.push(option.route);
-
-}
+  if (option.text === "Logout") {
+    localStorage.setItem("accessToken", "");
+    localStorage.setItem("refreshToken", "");
+    console.log("tokens deleted");
+  }
+  router.push({ path: "login" });
+};
 
 const toggle = (event: unknown) => {
   op.value.toggle(event);
@@ -44,7 +42,7 @@ const isGuest = ref(false);
 
 const guestOptions = [
   {
-    text: "Log In/Sign Up",
+    text: "Log In",
     route: "/login",
   },
   {
