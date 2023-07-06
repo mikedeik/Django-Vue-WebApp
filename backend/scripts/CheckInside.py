@@ -1,6 +1,6 @@
 from math import radians, cos, sin, asin, sqrt
 
-EARTH_RADIUS_KM = 6370
+EARTH_RADIUS_KM = 6371
 
 def pois_within_radius(self,pois, savedsearch):
         center_lat, center_lon = radians(savedsearch.CenterLatitude), radians(savedsearch.CenterLongitude)
