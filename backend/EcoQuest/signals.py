@@ -1,35 +1,34 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
-from .models import PointOfInterest, SavedSearch, Notification
+from .models import PointOfInterest, SavedSearch, Notification, Category
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
-@receiver(post_save, sender=PointOfInterest)
-def poi_created(sender, instance, created, **kwargs):
-    if created:
-        instance.save()
-        print("running")
-        print("again")
-        notification_text = f"New POI '{instance.Name}'"
-        print(instance)
-        print(instance.Categories)
-        categories = instance.Categories.all()
-        poi = PointOfInterest.objects.get(pk=instance.PointOfInterestId)
-        print(poi.Categories)
-        for cat in categories:
-            print(cat.CategoryId)
-        create_notification(notification_text, instance)
+@receiver(m2m_changed, sender=PointOfInterest.Categories.through)
+def poi_categories_changed(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == 'post_add':
+        if not reverse:
+            # Get the full set of categories
+            categories = Category.objects.filter(pk__in=pk_set)
+            notification_text = f"New POI '{instance.Name}'"
+            create_notification(notification_text, instance, categories)
+
+# @receiver(post_save, sender=PointOfInterest)
+# def poi_created(sender, instance, created, **kwargs):
+#     if created:
+#         notification_text = f"New POI '{instance.Name}'"
+#
+#         categories = instance.Categories.all()
+#         poi = PointOfInterest.objects.get(pk=instance.PointOfInterestId)
+#
+#         create_notification(notification_text, instance)
 
 
 # For every search in the database create a notification
-def create_notification(notification_text, instance):
-    categories = instance.Categories.all()
-    print(categories)
-    for item in categories:
-        print(item.CategoryId)
-    saved_searches = SavedSearch.objects.all()
-    print(saved_searches[0].Categories.all())
+def create_notification(notification_text, instance, categories):
+
+    saved_searches = SavedSearch.objects.all().filter(Categories__in=categories).distinct()
     if saved_searches:
         for search in saved_searches:
             notification = Notification(UserId=search.UserId,

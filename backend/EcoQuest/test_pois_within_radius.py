@@ -7,12 +7,12 @@ from scripts.CheckInside import pois_within_radius
 class Testpois_within_radius(TestCase):
 
     def setUp(self) -> None:
-        category1 = Category.objects.create(CategoryId=120,Name='natura')
-        category2 = Category.objects.create(CategoryId=10,Name='Δάση')
-        data = POIS.Meta.model.objects.create(PointOfInterestId=12,Name='John',Longitude=10,Latitude=1)
+        category1 = Category.objects.create(CategoryId=120, Name='natura')
+        category2 = Category.objects.create(CategoryId=10, Name='Δάση')
+        data = POIS.Meta.model.objects.create(PointOfInterestId=12, Name='John', Longitude=10, Latitude=1)
         data.Categories.add(category1,category2)
         userid = User.objects.create()
-        savedsearch = SavedSearch.objects.create(SavedSearchId=7,UserId=userid,Radius=9000)
+        savedsearch = SavedSearch.objects.create(SavedSearchId=7, UserId=userid, Radius=9000)
         savedsearch.Categories.add(category1,category2)
 
     
