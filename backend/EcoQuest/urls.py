@@ -2,6 +2,8 @@ from django.urls import path
 from .views import CategoryList, NotificationsList, NotificationRead, PoIList, PoIDetails, \
 CreatePOIsAPIView,CreateCategory,CreatePoiApi, RegisterView
 
+
+
 urlpatterns = [
     path('categories/', CategoryList.as_view()),
     path('post/categories/', CreateCategory.as_view()),

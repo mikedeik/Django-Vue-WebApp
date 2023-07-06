@@ -1,6 +1,8 @@
 import io
 import pandas as pd
 from django.shortcuts import render
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .models import Category, PointOfInterest, Notification
 from .serializers import PointOfInterestSerializer, CategorySerializer, NotificationListSerializer, \
     NotificationPutSerializer, RegisterSerializer
@@ -15,6 +17,7 @@ import codecs
 from rest_framework import generics
 from scripts.preprocess_csv import preprocess
 from django.core.exceptions import ValidationError
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -51,7 +54,6 @@ class CreatePoiApi(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
-        
         
 
 class CategoryList(APIView):

@@ -16,10 +16,7 @@ def poi_created(sender, instance, created, **kwargs):
         print(instance.Categories)
         categories = instance.Categories.all()
         poi = PointOfInterest.objects.get(pk=instance.PointOfInterestId)
-
-        new_cats = poi.Categories.all()
-        for category in new_cats:
-            print(category)
+        print(poi.Categories)
         for cat in categories:
             print(cat.CategoryId)
         create_notification(notification_text, instance)
@@ -31,7 +28,8 @@ def create_notification(notification_text, instance):
     print(categories)
     for item in categories:
         print(item.CategoryId)
-    saved_searches = SavedSearch.objects.all().filter(Categories__in=categories)
+    saved_searches = SavedSearch.objects.all()
+    print(saved_searches[0].Categories.all())
     if saved_searches:
         for search in saved_searches:
             notification = Notification(UserId=search.UserId,

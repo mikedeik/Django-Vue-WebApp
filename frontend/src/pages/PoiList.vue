@@ -1,22 +1,21 @@
 <template>
   <div class="root">
     <Header />
-    <div class="homepage">
-      <div>
+    <div class="homepage" v-if="typedPois.length">
+      <div class="sidebar">
         <h2>PoiList</h2>
-        <CustomCard
-          v-for="poi in mockPoints"
-          :key="poi.id"
-          :poi="poi"
-          @click="onPoiClick(poi)"
-        />
+        <div class="poi-list">
+          <CustomCard
+            v-for="(poi, index) in typedPois"
+            :key="poi.id"
+            :poi="poi"
+            @click="onPoiClick(poi)"
+          />
+
+        </div>
       </div>
       <div class="map-container">
-        <Map
-          :points-of-interest="mockPoints"
-          key="map"
-          @clickedPoi="onPoiClick"
-        />
+        <Map :points-of-interest="typedPois" key="map" @clickedPoi="onPoiClick" />
       </div>
     </div>
     <Dialog
@@ -27,6 +26,7 @@
     >
       <div class="container">
         <div class="image-container">
+
           <img
             class="image"
             src="https://fastly.picsum.photos/id/949/536/354.jpg?hmac=biBe6mOyyM3zjcsRQcyxfkHTNxHLyMzX2-x9rc-Ef8c"
@@ -70,9 +70,7 @@ const mockPoints: PointOfInterest[] = [
     description: "Description 1",
     longitude: 23.737539,
     latitude: 37.98381,
-    image:
-      "https://fastly.picsum.photos/id/949/536/354.jpg?hmac=biBe6mOyyM3zjcsRQcyxfkHTNxHLyMzX2-x9rc-Ef8c",
-    categoryId: 1,
+    categoryId: [1],
   },
   {
     id: 2,
@@ -80,9 +78,7 @@ const mockPoints: PointOfInterest[] = [
     description: "Description 2",
     longitude: 23.787432,
     latitude: 37.98372,
-    image:
-      "https://fastly.picsum.photos/id/886/200/200.jpg?hmac=pfmGQi7EpajLoJI0tKTPTUwOPQtH9YwE-wNl_kr7ErI",
-    categoryId: 2,
+    categoryId: [2],
   },
   {
     id: 3,
@@ -90,14 +86,12 @@ const mockPoints: PointOfInterest[] = [
     description: "Description 3",
     longitude: 23.287432,
     latitude: 37.48372,
-    image:
-      "https://fastly.picsum.photos/id/886/200/200.jpg?hmac=pfmGQi7EpajLoJI0tKTPTUwOPQtH9YwE-wNl_kr7ErI",
-    categoryId: 2,
+    categoryId: [2],
   },
 ];
 
 let pois: any = ref([]);
-const new_pois = ref<Poi[]>([]);
+const typedPois = ref<PointOfInterest[]>([]);
 const isPoiModalVisible = ref(false);
 const selectedPoi = ref<PointOfInterest>();
 
@@ -110,6 +104,17 @@ onMounted(async () => {
     console.error(error);
     alert(error);
   }
+  pois.value.map((poi: any) => {
+    typedPois.value.push({
+      id: poi.PointOfInterestId,
+      name: poi.Name,
+      description: poi.Description,
+      longitude: poi.Longitude,
+      latitude: poi.Latitude,
+      categoryId: poi.Categories,
+    })
+  })
+
   console.log(pois.value);
 });
 
@@ -130,12 +135,17 @@ function onPoiClick(poi: PointOfInterest) {
 .map-container {
   width: 100%;
   height: 100%;
+  max-height: 100vh;
   color: #4caf50;
 }
-.poi-list {
-  flex: 1;
+.sidebar {
+  height: 100%;
+  overflow-y: scroll;
   padding: 16px;
-  overflow-y: auto;
+}
+
+.poi-list {
+  margin-bottom: 20px;
 }
 
 .p-datatable {

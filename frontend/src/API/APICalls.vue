@@ -1,5 +1,6 @@
 <script lang="ts">
 import axios from "axios";
+import jwtDecode from 'jwt-decode';
 
 const loginAuthenticate = async (data: {
   username: string;
@@ -16,6 +17,14 @@ const loginAuthenticate = async (data: {
         },
       }
     );
+
+    try {
+        const decoded: any = jwtDecode(response.data.access);
+        response.data.user_id = decoded.user_id; // Assumes that the user ID is stored in the 'UserId' claim
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return { status:401, error: error };
+      }
     response.data.status = 200;
     return response.data;
   } catch (e: any) {
@@ -31,7 +40,7 @@ const register = async (data: {
   console.log(data);
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/register",
+      "http://127.0.0.1:8000/ecoquest/register",
       JSON.stringify(data),
       {
         headers: {

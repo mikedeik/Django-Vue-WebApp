@@ -20,6 +20,7 @@ export default defineComponent({
     const instance = getCurrentInstance();
 
     onMounted(() => {
+
       const map = L.map(mapContainer.value).fitBounds(
         getBounds(props.pointsOfInterest)
       );

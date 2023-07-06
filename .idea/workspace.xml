@@ -5,16 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/EcoQuest/migrations/0002_remove_pointofinterest_categoryid_and_more.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/texlo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/texlo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/EcoQuest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/API/APICalls.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/API/APICalls.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LogIn.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LogIn.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Types/PointOfInterest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Types/PointOfInterest.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Map.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Map.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +72,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/mike/PycharmProjects/texlo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/mike/PycharmProjects/ebay_app&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -182,7 +183,9 @@
       <workItem from="1687763989372" duration="1218000" />
       <workItem from="1688028114252" duration="535000" />
       <workItem from="1688494664008" duration="4620000" />
-      <workItem from="1688664978717" duration="3835000" />
+      <workItem from="1688664978717" duration="8624000" />
+      <workItem from="1688674122136" duration="209000" />
+      <workItem from="1688674603639" duration="2594000" />
     </task>
     <servers />
   </component>
