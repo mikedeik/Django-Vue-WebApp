@@ -4,7 +4,12 @@
     <div class="homepage">
       <div>
         <h2>PoiList</h2>
-        <CustomCard v-for="poi in mockPoints" :key="poi.id" :poi="poi" />
+        <CustomCard
+          v-for="poi in mockPoints"
+          :key="poi.id"
+          :poi="poi"
+          @click="onPoiClick(poi)"
+        />
       </div>
       <div class="map-container">
         <Map
@@ -20,7 +25,20 @@
       :header="selectedPoi?.name || 'POI'"
       :style="{ width: '50vw' }"
     >
-      <div>{{ selectedPoi }}</div>
+      <div class="container">
+        <div class="image-container">
+          <img class="image" :src="selectedPoi?.image" alt="Image" />
+        </div>
+        <div class="info-container">
+          <h1 class="info-row">{{ selectedPoi?.name }}</h1>
+          <h3 class="info-row">{{ selectedPoi?.description }}</h3>
+          <div class="info-row">
+            Coordinates: {{ selectedPoi?.latitude }},{{
+              selectedPoi?.longitude
+            }}
+          </div>
+        </div>
+      </div>
     </Dialog>
   </div>
 </template>
@@ -130,5 +148,30 @@ function onPoiClick(poi: PointOfInterest) {
   &:hover {
     color: black;
   }
+}
+
+.container {
+  display: flex;
+}
+
+.image-container {
+  flex: 1;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.info-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-between;
+  padding-left: 20px;
+}
+
+.info-row {
+  margin-bottom: 10px;
 }
 </style>
