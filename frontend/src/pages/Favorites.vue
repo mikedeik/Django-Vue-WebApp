@@ -54,6 +54,7 @@ export default defineComponent({
       circle = L.circleMarker([lat, long], {
         radius: radius * 10,
       }).addTo(map);
+      map.setView([lat, long], 13);
     }
     function deleteMarker(marker, map, circle) {
       map.removeLayer(marker);
