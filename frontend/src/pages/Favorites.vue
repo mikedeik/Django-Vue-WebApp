@@ -61,6 +61,11 @@ export default defineComponent({
     }
     function onSubmit() {
       //TODO
+      let data = {
+        lat: lat.value,
+        long: long.value,
+        radius: radius.value, //in km
+      };
     }
 
     return {
