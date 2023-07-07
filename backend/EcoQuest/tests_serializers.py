@@ -9,26 +9,26 @@ class TestPOISModelSerializer(TestCase):
 
     def setUp(self) -> None:
         category1 = Category.objects.create(CategoryId=120,Name='natura')
-        category2 = Category.objects.create(CategoryId=10,Name='Δάση')
-        test = POIS.Meta.model.objects.create(PointOfInterestId=12,Name='John',Longitude=12,Latitude=12)
+        category2 = Category.objects.create(CategoryId=10,Name='Dasi')
+        test = POIS.Meta.model.objects.create(PointOfInterestId=12,Name='Ethniko Dasos',Longitude=12,Latitude=12)
         test.Categories.add(category1,category2)
 
     def test_serializer(self):
         test = POIS.Meta.model.objects.get(PointOfInterestId=12)
         json = POIS(test).data
-        exdata = {"Name":"John","Categories":[10,120],"Longitude":"12.000000000000000","Latitude":"12.000000000000000",'CreatedDate':json['CreatedDate'],"KeyWords":""}
+        exdata = {"Name":"Ethniko Dasos","Categories":[10,120],"Longitude":"12.000000000000000","Latitude":"12.000000000000000",'CreatedDate':json['CreatedDate'],"KeyWords":""}
         jsonexd = exdata
         self.assertEquals(json,jsonexd)
 
 class TestCategoryModelSerializer(TestCase):
 
     def setUp(self) -> None:
-        CS.Meta.model.objects.create(CategoryId=120,Name='nature')
+        CS.Meta.model.objects.create(CategoryId=120,Name='natura')
 
     def test_serializer(self):
         test = CS.Meta.model.objects.get(CategoryId=120)
         json = CS(test).data
-        exdata = {"CategoryId":120,"Name":"nature"}
+        exdata = {"CategoryId":120,"Name":"natura"}
         jsonexd = exdata
         self.assertEquals(json,jsonexd)
 
@@ -37,8 +37,8 @@ class TestNotificationListModelSerializer(TestCase):
     def setUp(self) -> None:
         userid = User.objects.create(username="John",email="john@gmail.com")
         category1 = Category.objects.create(CategoryId=120,Name='natura')
-        category2 = Category.objects.create(CategoryId=10,Name='Δάση')
-        poiid = POIS.Meta.model.objects.create(Name='John',Longitude=12,Latitude=12)
+        category2 = Category.objects.create(CategoryId=10,Name='Limni')
+        poiid = POIS.Meta.model.objects.create(Name='Mavri Limni',Longitude=12,Latitude=12)
         poiid.Categories.add(category1,category2)
         NLS.Meta.model.objects.create(NotificationId=10,PointOfInterestId=poiid,UserId=userid,Text="New notification for poi")
 
