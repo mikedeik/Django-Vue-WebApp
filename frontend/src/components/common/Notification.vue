@@ -1,16 +1,16 @@
 <template>
   <div class="pi pi-bell" @click="toggle"></div>
-  <div class="count" v-if="notificationCount > 0">{{ notificationCount }}</div>
+  <div class="count" v-if="notificationsInc.length > 0">{{ notificationsInc.length }}</div>
 
   <OverlayPanel ref="op">
     <div class="op-container">
-      <template v-for="notification in notifications" :key="notification">
+      <template v-for="notification in notificationsInc" :key="notification.id">
         <div class="notification">
           <div class="notification-title">
-            {{ notification.title }}
+            {{ notification.id }}
           </div>
           <div class="notification-content">
-            {{ notification.content }}
+            {{ notification.message }}
           </div>
         </div>
       </template>
@@ -19,15 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import Logo from "../../assets/logo.png";
+
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 import OverlayPanel from "primevue/overlaypanel";
 
 const router = useRouter();
 //TODO fix
 const notificationCount = ref(2);
-
+const props = defineProps(['notificationsInc']);
 const notifications = ref([
   {
     title: "New POI in Athens",
@@ -42,6 +42,10 @@ const op = ref();
 const toggle = (event: unknown) => {
   op.value.toggle(event);
 };
+
+onMounted(() => {
+  console.log('notifications' + props.notificationsInc);
+})
 </script>
 
 <style scoped lang="scss">

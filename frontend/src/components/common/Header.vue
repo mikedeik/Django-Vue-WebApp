@@ -5,7 +5,7 @@
     </div>
     <div class="title">Explore Nature Like Never Before</div>
     <div v-if="isLogged" class="np-pair">
-      <div class="notification"><Notification /></div>
+      <div class="notification"><Notification :notifications-inc="notifications"/></div>
       <div class="profile-options"><ProfileModal /></div>
     </div>
     <div v-if="!isLogged" class="button-container">
@@ -45,7 +45,10 @@ onMounted(() => {
   } else {
     isLogged.value = false;
   }
-
+  notifications.value.push({
+    id: 1,
+    message: 'test'
+  });
   const user_id = localStorage.getItem("user_id");
   if(user_id){
     const socketUrl = `ws://localhost:8000/ws/notifications/${user_id}/`;
