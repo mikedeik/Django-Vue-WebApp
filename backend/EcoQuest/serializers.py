@@ -38,7 +38,7 @@ class SavedSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SavedSearch
-        fields = ['Categories', 'CenterLatitude', 'CenterLongitude', 'Radius']
+        fields = ['SavedSearchId', 'Categories', 'CenterLatitude', 'CenterLongitude', 'Radius']
 
 
 class RegisterSerializer(serializers.ModelSerializer):

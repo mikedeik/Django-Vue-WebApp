@@ -108,8 +108,11 @@ export default defineComponent({
           return c.value
         })
       };
-      console.log(data);
-      CreateSavedSearch(data).catch((e) => console.error(e));
+      CreateSavedSearch(data)
+          .then((res) => {
+            alert(res.message);
+          })
+          .catch((e) => console.error(e));
 
     }
 

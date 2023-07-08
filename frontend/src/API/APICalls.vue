@@ -74,8 +74,6 @@ const getAccessToken = async () => {
   const accessToken : any = localStorage.getItem('accessToken');
   const refreshToken : any = localStorage.getItem('refreshToken');
 
-  alert('refresh: ' + refreshToken + 'access: ' + accessToken);
-
   // If no refresh token is available, return null
   if (!refreshToken || refreshToken === "") {
     return null;
@@ -94,7 +92,6 @@ const getAccessToken = async () => {
                 'Content-Type': 'application/json',
               }
       });
-      console.log(response);
       if (response.status === 200) {
         const data = await response.data;
         const newAccessToken = data.access_token;
@@ -120,18 +117,22 @@ const CreateSavedSearch = async (data : any) => {
   const accessToken = await getAccessToken();
   alert(accessToken);
   if(!accessToken){
-    return { success: false, error : "You must Login to create a saved search"}
+    return { success: false, message : "You must Login to create a saved search", data: null}
   }
-  await axios.post("http://127.0.0.1:8000/ecoquest/searches/", data, {
+
+  const response = await axios.post("http://127.0.0.1:8000/ecoquest/searches/", data, {
     headers : {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + accessToken
     }
-  }).then((res) => {
-    if(res.status === 200){
+  })
 
-    }
-  }).catch((e) => console.log(e));
+  if(response.status === 201){
+      return {success: true, message : 'Created New Search', data: response.data}
+  }
+
+  return {success: false, message : 'Failed to Create New Search', data: response.data}
+
 };
 export { loginAuthenticate, register, getCategories, CreateSavedSearch };
 </script>

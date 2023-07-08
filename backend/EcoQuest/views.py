@@ -71,17 +71,16 @@ class SavedSearchCreate(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print(request.data)
         user = User.objects.get(id=request.user.id)
         serializer = SavedSearchSerializer(data=request.data)
-        print(serializer.initial_data)
         if serializer.is_valid():
             serializer.validated_data['UserId'] = user
 
             serializer.save()
-            return Response(serializer.data)
-        print(serializer.errors)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class NotificationsList(APIView):
 
     permission_classes = [IsAuthenticated]
