@@ -7,30 +7,17 @@
     <div class="content">
       <div class="search-bar">
         <div class="location">
-          <div class="location-title">Location</div>
           <div class="location-input">
-            <InputText placeholder="Where are you going?" v-model="location" />
+            <InputText placeholder="Search for POI" v-model="location" />
           </div>
         </div>
         <div class="poi-type">
-          <MultiSelect
-            v-model="selectedPois"
-            display="chip"
-            :options="poiOptions"
-            optionLabel="name"
-            placeholder="Τύπος POI"
-          />
+          <MultiSelect v-model="selectedCategories" display="chip" :options="categories" optionLabel="name"
+            placeholder="Κατηγορίες" />
         </div>
-        <div class="activity-type">
-          <MultiSelect
-            v-model="selectedActivities"
-            display="chip"
-            :options="activityOptions"
-            optionLabel="name"
-            placeholder="Δραστηριότητα"
-          />
-        </div>
-        <div class="more-filters">More Filters</div>
+        <!-- <div class="nomoi-type">
+          <MultiSelect v-model="selectedNomoi" display="chip" :options="nomoi" optionLabel="name" placeholder="Νομοί" />
+        </div> -->
         <div class="search-icon">
           <div class="pi pi-search" @click="router.push({ path: 'pois' })" />
         </div>
@@ -43,13 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Header from "../components/common/Header.vue";
 import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
 import { useRouter } from "vue-router";
+import { Category } from "../Types/Category";
+import { getCategories } from "../API/APICalls.vue";
 const router = useRouter();
 
+const categories = ref<Category[]>([]);
+const selectedCategories = ref<Category[]>([]);
 const poiOptions = ref([
   {
     name: "Λίμνες",
@@ -77,6 +68,24 @@ const activityOptions = ref([
 const selectedActivities = ref<Array<{ name: string; value: string }>>([]);
 
 const location = ref("");
+
+onMounted(() => {
+
+  getCategories().then((res) => {
+    if (res.success) {
+      res.map((category: any) => {
+        categories.value.push({
+          value: category.CategoryId,
+          name: category.Name
+        })
+      })
+    }
+    else {
+      alert(res.error);
+    }
+  }).catch()
+})
+
 </script>
 
 <style scoped lang="scss">
@@ -91,11 +100,13 @@ const location = ref("");
   min-width: 100%;
   height: 10%;
 }
+
 .content {
   height: 90%;
   width: 100%;
   //overflow: auto;
 }
+
 .search-bar {
   height: 10%;
   width: 100%;
@@ -113,12 +124,14 @@ const location = ref("");
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+
   &-title {
     color: white;
     font-size: 60px;
     font-weight: 500;
     margin-bottom: 20%;
   }
+
   &-button {
     width: 132px;
     height: 56px;
