@@ -53,5 +53,85 @@ const register = async (data: {
     return { error: e.message };
   }
 };
-export { loginAuthenticate, register };
+
+const getCategories = async () => {
+  try{
+    const response = await
+      axios.get("http://127.0.0.1:8000/ecoquest/categories/");
+    response.data.success = true;
+    return response.data;
+  } catch (e: any) {
+    return {error: e.message , success:false}
+  }
+
+};
+
+// Function to get a new access token if needed
+const getAccessToken = async () => {
+
+
+  // Get the access token and refresh token from local storage
+  const accessToken : any = localStorage.getItem('accessToken');
+  const refreshToken : any = localStorage.getItem('refreshToken');
+
+  alert('refresh: ' + refreshToken + 'access: ' + accessToken);
+
+  // If no refresh token is available, return null
+  if (!refreshToken || refreshToken === "") {
+    return null;
+  }
+
+  // Check if the access token has expired
+  const decodedToken: any = jwtDecode(accessToken);
+  const currentTime = Date.now() / 1000; // Convert milliseconds to seconds
+  if (decodedToken.exp < currentTime) {
+    // Access token has expired, send request with refresh token to get a new access token
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/token/refresh",
+          {refresh: refreshToken},
+          {
+              headers:{
+                'Content-Type': 'application/json',
+              }
+      });
+      console.log(response);
+      if (response.status === 200) {
+        const data = await response.data;
+        const newAccessToken = data.access_token;
+
+        // Store the new access token in local storage
+        localStorage.setItem('access', newAccessToken);
+
+        return newAccessToken;
+      }
+    } catch (error) {
+      console.error('Error refreshing access token:', error);
+    }
+
+    return null; // Failed to refresh access token
+  }
+
+  // Access token is still valid
+  return accessToken;
+};
+const CreateSavedSearch = async (data : any) => {
+  console.log(data);
+  // alert("Called");
+  const accessToken = await getAccessToken();
+  alert(accessToken);
+  if(!accessToken){
+    return { success: false, error : "You must Login to create a saved search"}
+  }
+  await axios.post("http://127.0.0.1:8000/ecoquest/searches/", data, {
+    headers : {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + accessToken
+    }
+  }).then((res) => {
+    if(res.status === 200){
+
+    }
+  }).catch((e) => console.log(e));
+};
+export { loginAuthenticate, register, getCategories, CreateSavedSearch };
 </script>

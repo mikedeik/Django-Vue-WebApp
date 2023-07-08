@@ -74,21 +74,6 @@ class SavedSearch(models.Model):
     Radius = models.DecimalField(max_digits=18, decimal_places=15)
     CreatedDate = models.DateTimeField(default=timezone.now)
 
-    # TODO migh see some use in this
-    def pois_within_radius(self):
-        pois = PointOfInterest.objects.all()
-        center_lat, center_lon = radians(self.center_latitude), radians(self.center_longitude)
-        results = []
-        for poi in pois:
-            poi_lat, poi_lon = radians(poi.latitude), radians(poi.longitude)
-            d_lat, d_lon = poi_lat - center_lat, poi_lon - center_lon
-            a = sin(d_lat / 2) ** 2 + cos(center_lat) * cos(poi_lat) * sin(d_lon / 2) ** 2
-            c = 2 * asin(sqrt(a))
-            distance_km = EARTH_RADIUS_KM * c
-            if distance_km <= self.Radius:
-                results.append(poi)
-        return results
-
 
 class Notification(models.Model):
     NotificationId = models.BigAutoField(primary_key=True)

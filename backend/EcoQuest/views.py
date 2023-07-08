@@ -3,16 +3,16 @@ import pandas as pd
 from django.shortcuts import render
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import Category, PointOfInterest, Notification
+from .models import Category, PointOfInterest, Notification, SavedSearch
 from .serializers import PointOfInterestSerializer, CategorySerializer, NotificationListSerializer, \
-    NotificationPutSerializer, RegisterSerializer
+    NotificationPutSerializer, RegisterSerializer, SavedSearchSerializer
 from django.contrib.auth.models import User
 import csv
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.parsers import MultiPartParser,FormParser
+from rest_framework.parsers import MultiPartParser, FormParser
 import codecs
 from rest_framework import generics
 from scripts.preprocess_csv import preprocess
@@ -39,7 +39,6 @@ class CreateCategory(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
 class CreatePoiApi(APIView):
@@ -58,18 +57,31 @@ class CreatePoiApi(APIView):
 
 class CategoryList(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
 
         categories = Category.objects.all()
-        print(categories)
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
     
     
+class SavedSearchCreate(APIView):
 
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
+        print(request.data)
+        user = User.objects.get(id=request.user.id)
+        serializer = SavedSearchSerializer(data=request.data)
+        print(serializer.initial_data)
+        if serializer.is_valid():
+            serializer.validated_data['UserId'] = user
+
+            serializer.save()
+            return Response(serializer.data)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class NotificationsList(APIView):
 
     permission_classes = [IsAuthenticated]

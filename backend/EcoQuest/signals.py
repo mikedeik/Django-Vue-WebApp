@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from .models import PointOfInterest, SavedSearch, Notification, Category
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from scripts.CheckInside import pois_within_radius
 
 
 @receiver(m2m_changed, sender=PointOfInterest.Categories.through)
@@ -31,28 +32,30 @@ def create_notification(notification_text, instance, categories):
     saved_searches = SavedSearch.objects.all().filter(Categories__in=categories).distinct()
     if saved_searches:
         for search in saved_searches:
-            notification = Notification(UserId=search.UserId,
-                                        PointOfInterestId=instance,
-                                        Text=notification_text)
-            notification.save()
+            print(pois_within_radius(instance, search))
+            if pois_within_radius(instance, search):
+                notification = Notification(UserId=search.UserId,
+                                            PointOfInterestId=instance,
+                                            Text=notification_text)
+                notification.save()
 
-            notification_data = {
-                'id': notification.NotificationId,
-                'message': notification.Text
-            }
+                notification_data = {
+                    'id': notification.NotificationId,
+                    'message': notification.Text
+                }
 
-            channel_layer = get_channel_layer()
-            print(channel_layer)
-            event = {
-                'type': 'message',
-                'data': notification_data
-            }
-            print("all good here")
-            print(search.UserId.id)
-            async_to_sync(channel_layer.group_send)(
-                f"user_{search.UserId.id}",
-                event
-            )
+                channel_layer = get_channel_layer()
+                print(channel_layer)
+                event = {
+                    'type': 'message',
+                    'data': notification_data
+                }
+                print("all good here")
+                print(search.UserId.id)
+                async_to_sync(channel_layer.group_send)(
+                    f"user_{search.UserId.id}",
+                    event
+                )
     # print(notification)
 
     # url = 'http://localhost:5137/webhook/'

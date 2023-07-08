@@ -1,6 +1,6 @@
 from abc import ABC
 from rest_framework import serializers
-from .models import Category, PointOfInterest, Notification
+from .models import Category, PointOfInterest, Notification, SavedSearch
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
@@ -11,7 +11,7 @@ class PointOfInterestSerializer(serializers.ModelSerializer):
     class Meta:
         model = PointOfInterest
         fields = '__all__'
-        fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate', 'KeyWords']
+        # fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate', 'KeyWords']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -33,6 +33,12 @@ class NotificationPutSerializer(serializers.ModelSerializer):
         model = Notification
         fields = ['Retrieved']
 
+
+class SavedSearchSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SavedSearch
+        fields = ['Categories', 'CenterLatitude', 'CenterLongitude', 'Radius']
 
 
 class RegisterSerializer(serializers.ModelSerializer):

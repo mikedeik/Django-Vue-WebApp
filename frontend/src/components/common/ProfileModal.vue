@@ -29,8 +29,10 @@ const handleClick = (option: any) => {
     localStorage.setItem("accessToken", "");
     localStorage.setItem("refreshToken", "");
     console.log("tokens deleted");
+    router.push({path: "login"});
+  }else {
+    router.push({path: option.route})
   }
-  router.push({ path: "login" });
 };
 
 const toggle = (event: unknown) => {
