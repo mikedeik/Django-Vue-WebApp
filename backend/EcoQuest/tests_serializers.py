@@ -10,6 +10,8 @@ class TestPOISModelSerializer(TestCase):
     def setUp(self) -> None:
         category1 = Category.objects.create(CategoryId=120,Name='natura')
         category2 = Category.objects.create(CategoryId=10,Name='Dasi')
+        nomos = N.objects.create(NomosId=12,Name="Attikis")
+        perifereia = P.objects.create(PerifereiaId=12,Name="Attikis")
         test = POIS.Meta.model.objects.create(PointOfInterestId=12,Name='Ethniko Dasos',Longitude=12,Latitude=12)
         test.Categories.add(category1,category2)
 
