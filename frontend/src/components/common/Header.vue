@@ -20,25 +20,60 @@
 import Logo from "./Logo.vue";
 import ProfileModal from "./ProfileModal.vue";
 import Notification from "./Notification.vue";
+import { NotificationType } from "../../Types/Notification";
 import { useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
+import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
 
 const isLogged = ref(false);
+const notifications = ref<NotificationType[]>([]);
+let socket: WebSocket | null = null;
 
 const router = useRouter();
 const handleClick = () => {
   router.push({ path: "login" });
 };
+
+const handleNotification = (notification: NotificationType) => {
+  notifications.value.push(notification);
+}
+
 onMounted(() => {
   const token:string | null = localStorage.getItem("refreshToken");
-  console.log("token", token);
+
   if (token !== undefined && token !== "" && token !== null) {
     isLogged.value = true;
   } else {
     isLogged.value = false;
   }
-  console.log("log", isLogged.value);
+
+  const user_id = localStorage.getItem("user_id");
+  if(user_id){
+    const socketUrl = `ws://localhost:8000/ws/notifications/${user_id}/`;
+    socket = new WebSocket(
+        socketUrl
+    );
+
+    if(socket.OPEN){
+        console.log("opened connection");
+        console.log(socket.url)
+    }
+    socket.addEventListener("message", (event) =>{
+        console.log("message from server");
+        console.log(event.data);
+        const notification = JSON.parse(event.data);
+        handleNotification(notification);
+    });
+  }
+
 });
+
+onBeforeUnmount(() => {
+      if (socket) {
+        socket.close();
+        console.log("socket closed");
+        socket = null;
+      }
+    });
 </script>
 
 <style scoped lang="scss">

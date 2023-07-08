@@ -53,6 +53,7 @@ const handleLogin = async () => {
         console.log(res);
       localStorage.setItem("accessToken", res.access);
       localStorage.setItem("refreshToken", res.refresh);
+      localStorage.setItem("user_id", res.user_id);
        router.push({ path: "home" });
       }else{
         localStorage.setItem("accessToken", '');

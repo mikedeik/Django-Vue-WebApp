@@ -19,11 +19,19 @@ from scripts.preprocess_csv import preprocess
 from django.core.exceptions import ValidationError
 
 
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
+# class RegisterView(generics.CreateAPIView):
+#     queryset = User.objects.all()
+#     permission_classes = (AllowAny,)
+#     serializer_class = RegisterSerializer
 
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Create your views here.
 

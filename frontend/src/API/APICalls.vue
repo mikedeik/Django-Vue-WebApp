@@ -34,14 +34,17 @@ const loginAuthenticate = async (data: {
 
 const register = async (data: {
   username: string;
+  first_name: string;
+  last_name: string;
   password: string;
+  password2: string;
   email: string;
 }) => {
   console.log(data);
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/ecoquest/register",
-      JSON.stringify(data),
+      "http://127.0.0.1:8000/register/",
+      data,
       {
         headers: {
           "Content-Type": "application/json",

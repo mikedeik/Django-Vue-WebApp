@@ -11,7 +11,6 @@ urlpatterns = [
     path('create_pois/', CreatePOIsAPIView.as_view(), name='create_pois'),
     path('post/poi/', CreatePoiApi.as_view()),
     path('poi/', PoIList.as_view()),
-    path('register/', RegisterView.as_view()),
 
     path('poi/<int:PoIID>/', PoIDetails.as_view()),
 

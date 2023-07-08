@@ -6,9 +6,9 @@
     <div class="content">
       <h1>Register</h1>
       <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
+        <label for="name" class="form-label">Όνομα</label>
         <input
-          v-model="name"
+          v-model="first_name"
           type="text"
           class="form-control"
           id="name"
@@ -16,12 +16,12 @@
         />
       </div>
       <div class="mb-3">
-        <label for="surname" class="form-label">Username</label>
+        <label for="name" class="form-label">Επίθετο</label>
         <input
-          v-model="username"
+          v-model="last_name"
           type="text"
           class="form-control"
-          id="surname"
+          id="last_name"
           required
         />
       </div>
@@ -34,9 +34,21 @@
           id="email"
           required
         />
+
+      <div class="mb-3">
+        <label for="surname" class="form-label">Όνομα Χρήστη</label>
+        <input
+          v-model="username"
+          type="text"
+          class="form-control"
+          id="surname"
+          required
+        />
+      </div>
+
       </div>
       <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label">Κωδικός</label>
         <input
           v-model="password"
           type="password"
@@ -44,6 +56,16 @@
           id="password"
           required
         />
+        <div class="mb-3">
+        <label for="name" class="form-label">Επιβεβαίωση Κωδικού</label>
+        <input
+          v-model="confirmPassword"
+          type="text"
+          class="form-control"
+          id="confirmPassword"
+          required
+        />
+      </div>
       </div>
       <div v-if="error" class="alert alert-danger" role="alert">
         {{ error }}
@@ -64,10 +86,12 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 // Define reactive variables using `ref`
-const name = ref("");
+const first_name = ref("");
+const last_name = ref("");
 const username = ref("");
 const email = ref("");
 const password = ref("");
+const confirmPassword = ref("");
 
 const error = ref("");
 
@@ -75,7 +99,10 @@ const error = ref("");
 const submitForm = async () => {
   const data = {
     username: username.value,
+    first_name: first_name.value,
+    last_name: last_name.value,
     password: password.value,
+    password2: confirmPassword.value,
     email: email.value,
   };
   await register(data).then(() => router.push({ path: "home" }));
