@@ -12,13 +12,13 @@ class TestPOISModelSerializer(TestCase):
         category2 = Category.objects.create(CategoryId=10,Name='Dasi')
         nomos = N.objects.create(NomosId=12,Name="Attikis")
         perifereia = P.objects.create(PerifereiaId=12,Name="Attikis")
-        test = POIS.Meta.model.objects.create(PointOfInterestId=12,Name='Ethniko Dasos',Longitude=12,Latitude=12)
+        test = POIS.Meta.model.objects.create(PointOfInterestId=12,Name='Ethniko Dasos',PerifereiaId=perifereia,NomosId=nomos,Longitude=12,Latitude=12)
         test.Categories.add(category1,category2)
 
     def test_serializer(self):
         test = POIS.Meta.model.objects.get(PointOfInterestId=12)
         json = POIS(test).data
-        exdata = {"Name":"Ethniko Dasos","Categories":[10,120],"Longitude":"12.000000000000000","Latitude":"12.000000000000000",'CreatedDate':json['CreatedDate'],"KeyWords":""}
+        exdata = {"PointOfInterestId":12,"Name":"Ethniko Dasos","Longitude":"12.000000000000000","Latitude":"12.000000000000000",'CreatedDate':json['CreatedDate'],"KeyWords":"","PerifereiaId":12,"NomosId":12,"Categories":[10,120]}
         jsonexd = exdata
         self.assertEquals(json,jsonexd)
 
