@@ -19,5 +19,5 @@ class Testpois_within_radius(TestCase):
     def test_pois_within_radius(self):
         pois = POIS.Meta.model.objects.all()
         savedsearch = SavedSearch.objects.get(SavedSearchId=7)
-        testdata = pois_within_radius(self,pois,savedsearch)
+        testdata = pois_within_radius(pois,savedsearch)
         self.assertNotEquals(testdata,[])
