@@ -21,4 +21,4 @@ class Testpois_within_radius(TestCase):
         savedsearch = SavedSearch.objects.get(SavedSearchId=7)
         for poi in pois:
             testdata = pois_within_radius(poi, savedsearch)
-        self.assertNotEquals(testdata, True)
+        self.assertEquals(testdata, True)
