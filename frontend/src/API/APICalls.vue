@@ -142,7 +142,7 @@ const SearchPois = async (data: any) => {
 
   try{
     const response = await axios.post(
-      "http://127.0.0.1:8000/ecoquest/search/pois/",
+      `http://127.0.0.1:8000/ecoquest/search/pois/?page=${data.page}`,
       data,
       {
         headers: {
@@ -151,7 +151,7 @@ const SearchPois = async (data: any) => {
       });
 
     if(response.status === 200){
-      return {success: true , message: '200 OK', data: response.data.results}
+      return {success: true , message: '200 OK', data: response.data}
     }
 
     return {success: false , message: 'Error fetching Data', data: null}

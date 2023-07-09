@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, getCurrentInstance } from "vue";
+import { defineComponent, ref, onMounted, getCurrentInstance, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { PointOfInterest } from "../../Types/PointOfInterest";
@@ -18,10 +18,19 @@ export default defineComponent({
   setup(props) {
     const mapContainer = ref(null);
     const instance = getCurrentInstance();
+    let map :any;
+
+    // Create a watcher for the pointsOfInterest prop
+    watch(
+      () => props.pointsOfInterest,
+      (newPointsOfInterest) => {
+        // Perform any necessary actions to update the map with the new pointsOfInterest
+        updateMapMarkers(newPointsOfInterest);
+      }
+    );
 
     onMounted(() => {
-
-      const map = L.map(mapContainer.value).fitBounds(
+      map = L.map(mapContainer.value).fitBounds(
         getBounds(props.pointsOfInterest)
       );
 
@@ -30,12 +39,8 @@ export default defineComponent({
           'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      props.pointsOfInterest.forEach((poi) => {
-        L.marker([poi.latitude, poi.longitude])
-          .addTo(map)
-          .bindPopup(`<strong>${poi.name}</strong><br>${poi.description}`)
-          .on("click", () => instance?.emit("clickedPoi", poi));
-      });
+      // Create markers for the initial pointsOfInterest
+      updateMapMarkers(props.pointsOfInterest);
     });
 
     // Helper function to calculate the bounds of all points
@@ -44,6 +49,24 @@ export default defineComponent({
         L.latLng(poi.latitude, poi.longitude)
       );
       return L.latLngBounds(latLngs);
+    }
+
+    // Helper function to update the map markers
+    function updateMapMarkers(pointsOfInterest: PointOfInterest[]) {
+      // Clear existing markers
+      map.eachLayer((layer: any) => {
+        if (layer instanceof L.Marker) {
+          map.removeLayer(layer);
+        }
+      });
+
+      // Create new markers based on the updated pointsOfInterest
+      pointsOfInterest.forEach((poi) => {
+        L.marker([poi.latitude, poi.longitude])
+          .addTo(map)
+          .bindPopup(`<strong>${poi.name}</strong><br>${poi.description}`)
+          .on("click", () => instance?.emit("clickedPoi", poi));
+      });
     }
 
     return {

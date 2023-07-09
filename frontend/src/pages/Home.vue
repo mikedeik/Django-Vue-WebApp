@@ -5,9 +5,6 @@
     </div>
 
     <div class="content">
-      <div class="search-bar">
-        <SearchBar/>
-      </div>
       <div class="main-content">
         <div class="main-content-title">Not sure where to go? Perfect</div>
         <Button class="main-content-button" @click="router.push({path: 'pois'})">I'm flexible</Button>
