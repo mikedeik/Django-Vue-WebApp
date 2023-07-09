@@ -97,6 +97,7 @@ onMounted(async () => {
             'Content-type': 'application/json'
           }
         });
+    // test
     console.log(response.data);
     totalCount.value = response.data.count;
     pois.value = response.data.results;
