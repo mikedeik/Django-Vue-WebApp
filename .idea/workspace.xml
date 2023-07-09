@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f93ffd3-5de3-40ca-b43d-4713c5281d14" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/FavoritesList.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/API/APICalls.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/API/APICalls.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Types/PointOfInterest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Types/PointOfInterest.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/SearchBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/SearchBar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +179,7 @@
       <workItem from="1688664978717" duration="8624000" />
       <workItem from="1688674122136" duration="209000" />
       <workItem from="1688674603639" duration="4333000" />
-      <workItem from="1688804976155" duration="60432000" />
+      <workItem from="1688804976155" duration="64535000" />
     </task>
     <servers />
   </component>

@@ -163,6 +163,7 @@ class PoIDetails(APIView):
         serializer = PointOfInterestSerializer(poi)
         return Response(serializer.data)
 
+
 class CustomPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'count'
@@ -211,7 +212,7 @@ class SearchPoisView(APIView):
             if text:
                 print(text)
                 text_query = Q(Name__contains=text) | Q(PerifereiaId__Name__contains=text) | Q(
-                    NomosId__Name__contains=text)
+                    NomosId__Name__contains=text) | Q(Description__contains=text)
             else:
                 text_query = Q()
 
@@ -254,20 +255,17 @@ class SearchPoisView(APIView):
 
             ###########################################
             # perform the final query
-            if text is not None and category_array is not None and keywords is not None:
+            print(category_array)
+            print(text)
+            if text == '' and not category_array == [] and not keywords == []:
                 print("here")
-                if not distance == {} and not distance == None:
-
+                if not distance == {} and distance is not None:
                     query = distance_queryset
                 else:
-                    query = []
-            else:
-                query = query.filter(text_query | category_query | keyword_queries)
-                # if not distance == {} and not distance == None:
-                #     query = query.union(distance_queryset)
-            query = query.filter(text_query | category_query | keyword_queries).distinct()
+                    query = PointOfInterest.objects.none()
 
-            print(query)######
+            query = query.filter(text_query).filter(category_query).filter(keyword_queries).distinct()
+
             paginator = CustomPagination()
             paginated_query = paginator.paginate_queryset(query, request)
 
@@ -277,6 +275,7 @@ class SearchPoisView(APIView):
             #return the paginated response
             return paginator.get_paginated_response(serializer.data)
         except Exception as e:
+            print(e)
             return Response({'exception': e}, status=500)
 
 class CreatePOIsAPIView(APIView):
