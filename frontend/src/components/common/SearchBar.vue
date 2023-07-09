@@ -32,12 +32,16 @@ onMounted(() => {
 });
 
 type searchType = {
+  start: number,
+  count: number,
   categories : number[] | null,
   text : string | null,
   keywords : string[] | null
 }
 const fixSearchData = async () => {
   let data : searchType = {
+    start : 1,
+    count : 10,
     categories: null,
     text: null,
     keywords: null
@@ -73,7 +77,7 @@ async function searchPOIs() {
     alert("An error occurred while searching POIs.");
   }
 
-  await router.push({path: 'pois'});
+  // await router.push({path: 'pois'});
 }
 
 </script>

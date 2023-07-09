@@ -9,8 +9,6 @@
       <change beforePath="$PROJECT_DIR$/backend/EcoQuest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/EcoQuest/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/API/APICalls.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/API/APICalls.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/common/SearchBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/SearchBar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PoiList.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +179,7 @@
       <workItem from="1688664978717" duration="8624000" />
       <workItem from="1688674122136" duration="209000" />
       <workItem from="1688674603639" duration="4333000" />
-      <workItem from="1688804976155" duration="37475000" />
+      <workItem from="1688804976155" duration="41652000" />
     </task>
     <servers />
   </component>

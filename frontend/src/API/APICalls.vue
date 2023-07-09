@@ -151,7 +151,7 @@ const SearchPois = async (data: any) => {
       });
 
     if(response.status === 200){
-      return {success: true , message: '200 OK', data: response.data}
+      return {success: true , message: '200 OK', data: response.data.results}
     }
 
     return {success: false , message: 'Error fetching Data', data: null}
