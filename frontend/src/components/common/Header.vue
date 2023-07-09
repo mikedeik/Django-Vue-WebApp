@@ -12,6 +12,9 @@
       <div class="login-button">
         <Button @click="handleClick"> Σύνδεση </Button>
       </div>
+      <div v-if="!isLogged" class="button-container">
+        <Button @click="register">Εγγραφή</Button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +35,9 @@ const router = useRouter();
 const handleClick = () => {
   router.push({ path: "login" });
 };
-
+const register = () => {
+  router.push({ path: "register" });
+}
 const handleNotification = (notification: NotificationType) => {
   notifications.value.push(notification);
 }
