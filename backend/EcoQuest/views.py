@@ -1,5 +1,8 @@
 import io
 import pandas as pd
+import math
+# from geopy import distance
+from geopy.distance import geodesic
 from django.db.models import Q
 from django.shortcuts import render
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -149,10 +152,8 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'count'
     max_page_size = 100
 
-class SearchPoisView(APIView):
-    # pagination_class = PageNumberPagination
 
-    # pagination_class = PageNumberPagination
+class SearchPoisView(APIView):
 
     def post(self, request):
         body = request.data
@@ -161,19 +162,13 @@ class SearchPoisView(APIView):
         long = None
         lat = None
         km = None
+        distance = None
         category_array = []
         keywords = []
 
         try:
             page = body.get('start', 1)
             count = body['count']
-            ###### TO BE DELETED
-            print(body)
-            print(page)
-            print(count)
-            print(text)
-            print(filters)
-            #########################
 
             # if filters are given
             if not filters == {}:
@@ -184,9 +179,6 @@ class SearchPoisView(APIView):
                     long = distance['lon']
                     lat = distance['lat']
                     km = distance['km']
-                    # print(long)
-                    # print(lat)
-                    # print(km)
 
                 # get categories if any
                 category_array = filters.get('categories', [])
@@ -194,8 +186,6 @@ class SearchPoisView(APIView):
                 # get keywords if any
                 keywords = filters.get('keywords', [])
 
-                print(keywords)  ################
-                print(category_array)  #############
 
             # build the base query to filter PointOfInterest objects
             query = PointOfInterest.objects.all()
@@ -218,54 +208,58 @@ class SearchPoisView(APIView):
                 for keyword in keywords:
                     keyword_queries |= Q(KeyWords__icontains=keyword)
 
+            # get pois for a specific distance in kms
+            distance_query = Q()
+            if lat is not None and long is not None and km is not None:
+                #check types of values
+                if not isinstance(lat, float) or not isinstance(long, float):
+                    raise ValueError("lat and lon must be of type float")   #handle the error or raise an exception
+                if km is not None:
+                    if not isinstance(km, int):
+                        raise ValueError("km must be of type int")  #handle the error or raise an exception
+                
+                #filter objects based on exact distance
+                points_of_interest = PointOfInterest.objects.all()
+                filtered_points = []
+                target_location = (lat, long)
+                for poi in points_of_interest:
+                    poi_location = (poi.Latitude, poi.Longitude)
+                    distance = geodesic(target_location, poi_location).kilometers
+                    print(distance)
+                    if distance == 0.0 or abs(distance - km) < 0.001:  #if the distance is spot on or if too small add it to filtered pois
+                        filtered_points.append(poi)
 
-
-            # create query for distance
-            # print('LAT AND LON')
-            # if lat is not None and long is not None and km is not None:
-            #     if not isinstance(lat, float) or not isinstance(long, float):
-            #         #handle the error or raise an exception
-            #         raise ValueError("lat and lon must be of type float")
-            #     if km is not None:
-            #         if not isinstance(km, int):
-            #             #handle the error or raise an exception
-            #             raise ValueError("km must be of type int")
-            #     distance_query = Q(
-            #         Latitude=(lat - km / 111, lat + km / 111),
-            #         Longitude=(lon - km / (111 * math.cos(lat)), lon + km / (111 * math.cos(lat)))
-            #     )
+                #convert list of objects into a QuerySet
+                if not filtered_points == []:
+                    filtered_pks = [fp.PointOfInterestId for fp in filtered_points]
+                    distance_queryset = PointOfInterest.objects.filter(PointOfInterestId__in=filtered_pks) #actual conversion
+                
 
             ############################################
             # perform the final query
-            # print(text_query)
-            # print(category_query)
-            # query = query.filter(text_query | distance_query | keyword_query | category_query)
-            # query = query.filter(text_query | category_query | keyword_queries)
-            query = query.filter(text_query).filter(category_query).filter(keyword_queries)
-            print(query)
+
+            if not text == "" and not category_array == [] and not keywords == []:  
+                if not distance == {} and not distance == None:
+                    query = distance_queryset
+                else:
+                    query = []
+            else: 
+                query = query.filter(text_query | category_query | keyword_queries)
+                if not distance == {} and not distance == None:
+                    query = query.union(distance_queryset)
+
+
+            print(query)######
             paginator = CustomPagination()
             paginated_query = paginator.paginate_queryset(query, request)
 
-            # # Serialize the paginated results
+            #serialize the paginated results
             serializer = PointOfInterestSerializer(paginated_query, many=True)
 
-            # # Return the paginated response
+            #return the paginated response
             return paginator.get_paginated_response(serializer.data)
         except Exception as e:
-            print(0)
             return Response({'exception': e}, status=500)
-        return Response()  ######
-
-        # # Serialize and return the pois as a response
-        # serializer = PointOfInterestSerializer(pois, many=True)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-        
-        # # Serialize and return the pois as a response
-        # serializer = PointOfInterestSerializer(pois, many=True)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class CreatePOIsAPIView(APIView):
 
