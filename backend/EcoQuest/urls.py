@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CategoryList, NotificationsList, NotificationRead, PoIList, PoIDetails, \
-    CreatePOIsAPIView, CreateCategory, CreatePoiApi, RegisterView, SavedSearchCreate, SearchPoisView
+    CreatePOIsAPIView, CreateCategory, CreatePoiApi, RegisterView, SavedSearchCreate, SearchPoisView, AddToFavorites
 
 urlpatterns = [
     path('categories/', CategoryList.as_view()),
@@ -12,7 +12,7 @@ urlpatterns = [
     path('post/poi/', CreatePoiApi.as_view()),
     path('poi/', PoIList.as_view()),
     path('search/pois/', SearchPoisView.as_view()),
-
+    path('addtofavorites/<int:PoiId>/', AddToFavorites.as_view()),
     path('poi/<int:PoIID>/', PoIDetails.as_view()),
 
 ]

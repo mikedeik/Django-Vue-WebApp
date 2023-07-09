@@ -49,17 +49,10 @@ class PointOfInterest(models.Model):
     Latitude = models.DecimalField(max_digits=18, decimal_places=15)
     CreatedDate = models.DateTimeField(default=timezone.now)
     KeyWords = models.CharField(max_length=2000, default="")
+    IsFavoriteTo = models.ManyToManyField(User, null=True, blank=True)
 
     def __str__(self):
         return self.Name
-
-
-class FavoritePois(models.Model):
-    FavoriteId = models.BigAutoField(primary_key=True)
-    PointOfInterestId = models.ForeignKey(PointOfInterest, on_delete=models.CASCADE)
-    UserId = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
 
 
 class PoiPicture(models.Model):

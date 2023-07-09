@@ -14,6 +14,14 @@ class PointOfInterestSerializer(serializers.ModelSerializer):
         # fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate', 'KeyWords']
 
 
+# class AddToFavoritesSerializer(serializers.ModelSerializer):
+#
+#     class Meta:
+#         model = PointOfInterest
+#         fields = ['Name',]
+        # fields = ['Name', 'Categories', 'Longitude', 'Latitude', 'CreatedDate', 'KeyWords']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -39,6 +47,7 @@ class SavedSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = SavedSearch
         fields = ['SavedSearchId', 'Categories', 'CenterLatitude', 'CenterLongitude', 'Radius']
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):

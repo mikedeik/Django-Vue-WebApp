@@ -130,6 +130,19 @@ class PoIList(APIView):
         return Response(serializer.data)
 
 
+class AddToFavorites(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, PoiId):
+        user = User.objects.get(id=request.user.id)
+        poi = PointOfInterest.objects.get(PointOfInterestId=PoiId)
+        poi.IsFavoriteTo.add(user)
+        return Response({"PointOfInterestId": poi.PointOfInterestId}, status=status.HTTP_202_ACCEPTED)
+
+
+
+
 # Details of PoI
 
 class PoIDetails(APIView):
@@ -167,11 +180,12 @@ class SearchPoisView(APIView):
         keywords = []
 
         try:
-            page = body.get('start', 1)
+            page = body.get('page', 1)
             count = body['count']
 
             # if filters are given
             if not filters == {}:
+
                 distance = filters.get('distance', {})
 
                 # get distance filters if any
@@ -209,45 +223,46 @@ class SearchPoisView(APIView):
                     keyword_queries |= Q(KeyWords__icontains=keyword.lower())
 
             # get pois for a specific distance in kms
-            distance_queryset = Q()
-            # if lat is not None and long is not None and km is not None:
-            #     #check types of values
-            #     if not isinstance(lat, float) or not isinstance(long, float):
-            #         raise ValueError("lat and lon must be of type float")   #handle the error or raise an exception
-            #     if km is not None:
-            #         if not isinstance(km, int):
-            #             raise ValueError("km must be of type int")  #handle the error or raise an exception
-            #
-            #     #filter objects based on exact distance
-            #     points_of_interest = PointOfInterest.objects.all()
-            #     filtered_points = []
-            #     target_location = (lat, long)
-            #     for poi in points_of_interest:
-            #         poi_location = (poi.Latitude, poi.Longitude)
-            #         distance = geodesic(target_location, poi_location).kilometers
-            #         print(distance)
-            #         if distance == 0.0 or abs(distance - km) < 0.001:  #if the distance is spot on or if too small add it to filtered pois
-            #             filtered_points.append(poi)
-            #
-            #     #convert list of objects into a QuerySet
-            #     if not filtered_points == []:
-            #         filtered_pks = [fp.PointOfInterestId for fp in filtered_points]
-            #         distance_queryset = PointOfInterest.objects.filter(PointOfInterestId__in=filtered_pks) #actual conversion
-                
+            # distance_queryset = Q()
+            if lat is not None and long is not None and km is not None:
 
-            ############################################
+                #check types of values
+                if not isinstance(lat, float) or not isinstance(long, float):
+                    raise ValueError("lat and lon must be of type float")   #handle the error or raise an exception
+                if km is not None:
+                    if not isinstance(km, int):
+                        raise ValueError("km must be of type int")  #handle the error or raise an exception
+
+                #filter objects based on exact distance
+                points_of_interest = PointOfInterest.objects.all()
+                filtered_points = []
+                target_location = (lat, long)
+                for poi in points_of_interest:
+                    poi_location = (poi.Latitude, poi.Longitude)
+                    distance = geodesic(target_location, poi_location).kilometers
+                    if distance == 0.0 or abs(distance - km) < 0.001:  #if the distance is spot on or if too small add it to filtered pois
+                        filtered_points.append(poi)
+
+                #convert list of objects into a QuerySet
+                if not filtered_points == []:
+                    filtered_pks = [fp.PointOfInterestId for fp in filtered_points]
+                    distance_queryset = PointOfInterest.objects.filter(PointOfInterestId__in=filtered_pks) #actual conversion
+
+
+            ###########################################
             # perform the final query
+            if text is not None and category_array is not None and keywords is not None:
+                print("here")
+                if not distance == {} and not distance == None:
 
-            # if not text == "" and not category_array == [] and not keywords == []:
-            #     if not distance == {} and not distance == None:
-            #         query = distance_queryset
-            #     else:
-            #         query = []
-            # else:
-            #     query = query.filter(text_query | category_query | keyword_queries)
-            #     # if not distance == {} and not distance == None:
-            #     #     query = query.union(distance_queryset)
-            query = query.filter(text_query | category_query | keyword_queries)
+                    query = distance_queryset
+                else:
+                    query = []
+            else:
+                query = query.filter(text_query | category_query | keyword_queries)
+                # if not distance == {} and not distance == None:
+                #     query = query.union(distance_queryset)
+            query = query.filter(text_query | category_query | keyword_queries).distinct()
 
             print(query)######
             paginator = CustomPagination()
