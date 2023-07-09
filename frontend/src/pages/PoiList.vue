@@ -2,7 +2,7 @@
   <div class="root">
     <Header />
     <div class="search-bar">
-      <SearchBar/>
+      <SearchBar @search-complete="updateTypedPois"/>
     </div>
 
     <div class="homepage" v-if="typedPois.length">
@@ -21,6 +21,9 @@
       <div class="map-container">
         <Map :points-of-interest="typedPois" key="map" @clickedPoi="onPoiClick" />
       </div>
+    </div>
+    <div v-else>
+      No Data to display
     </div>
     <Dialog
       v-model:visible="isPoiModalVisible"
@@ -90,6 +93,21 @@ onMounted(async () => {
 
   console.log(pois.value);
 });
+
+const updateTypedPois = (searchData : any) => {
+  console.log(searchData);
+  typedPois.value = []
+  searchData.map((poi: any) => {
+    typedPois.value.push({
+      id: poi.PointOfInterestId,
+      name: poi.Name,
+      description: poi.Description,
+      longitude: poi.Longitude,
+      latitude: poi.Latitude,
+      categoryId: poi.Categories,
+    })
+  })
+}
 
 function onPoiClick(poi: PointOfInterest) {
   selectedPoi.value = poi;

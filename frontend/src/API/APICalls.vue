@@ -137,5 +137,29 @@ const CreateSavedSearch = async (data : any) => {
   return {success: false, message : 'Failed to Create New Search', data: response.data}
 
 };
-export { loginAuthenticate, register, getCategories, CreateSavedSearch };
+
+const SearchPois = async (data: any) => {
+
+  try{
+    const response = await axios.post(
+      "http://127.0.0.1:8000/ecoquest/search/pois/",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+    if(response.status === 200){
+      return {success: true , message: '200 OK', data: response.data}
+    }
+
+    return {success: false , message: 'Error fetching Data', data: null}
+
+  } catch (e) {
+    return {success: false , message: e, data: null}
+  }
+
+}
+export { loginAuthenticate, register, getCategories, CreateSavedSearch, SearchPois };
 </script>

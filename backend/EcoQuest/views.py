@@ -214,13 +214,6 @@ class SearchPoisView(APIView):
                 category_ids = Category.objects.filter(Name__in=category_array).values_list('CategoryId', flat=True)
                 category_query = Q(Categories__in=category_ids)
 
-            #create query for keywords
-            keyword_queries = Q()
-            if keywords:
-                print("KEYWORDS")
-                # add to lower when we fixed the data###############
-                for keyword in keywords:
-                    keyword_queries |= Q(KeyWords__icontains=keyword)
 
             #create query for distance
             # print('LAT AND LON')
@@ -259,6 +252,9 @@ class SearchPoisView(APIView):
 
 
         
+        # # Serialize and return the pois as a response
+        # serializer = PointOfInterestSerializer(pois, many=True)
+        # return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreatePOIsAPIView(APIView):
