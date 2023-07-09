@@ -144,25 +144,34 @@ class PoIDetails(APIView):
         serializer = PointOfInterestSerializer(poi)
         return Response(serializer.data)
 
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'count'
+    max_page_size = 100
 
 class SearchPoisView(APIView):
-    pagination_class = PageNumberPagination
+    # pagination_class = PageNumberPagination
 
     def post(self, request):
         body = request.data
         text = body.get('text', '')
         filters = body.get('filters', {})
-
+        long = None
+        lat = None
+        km = None
+        category_array = []
+        keywords = []
 
         try:
             page = body.get('start', 1)
             count = body['count']
-
+            ###### TO BE DELETED 
             print(body)
             print(page)
             print(count)
             print(text)
             print(filters)
+            #########################
 
             #if filters are given
             if not filters == {}:
@@ -173,9 +182,9 @@ class SearchPoisView(APIView):
                     long = distance['lon']
                     lat = distance['lat']
                     km = distance['km']
-                    print(long)
-                    print(lat)
-                    print(km)
+                    # print(long)
+                    # print(lat)
+                    # print(km)
 
                 #get categories if any
                 category_array = filters.get('categories', [])
@@ -183,10 +192,66 @@ class SearchPoisView(APIView):
                 #get keywords if any
                 keywords = filters.get('keywords', [])
 
-                print(keywords)
-                print(category_array)
-                
+                print(keywords)################
+                print(category_array)#############
+            
+            #build the base query to filter PointOfInterest objects
+            query = PointOfInterest.objects.all()
 
+            #create query for text based on the 'Name', 'Perifereia', and 'Nomos' fields
+            if text:
+                print(text)
+                text_query = Q(Name__contains=text) | Q(PerifereiaId__Name__contains=text) | Q(NomosId__Name__contains=text)
+            else:
+                text_query=Q()
+
+            #create query for categories
+            category_query = Q()
+            if category_array:
+                print("category array is")
+                print(category_array)########
+                #retrieve the primary keys of Category objects based on names
+                category_ids = Category.objects.filter(Name__in=category_array).values_list('CategoryId', flat=True)
+                category_query = Q(Categories__in=category_ids)
+
+            #create query for keywords
+            keyword_queries = Q()
+            if keywords:
+                print("KEYWORDS")
+                # add to lower when we fixed the data###############
+                for keyword in keywords:
+                    keyword_queries |= Q(KeyWords__icontains=keyword)
+
+            #create query for distance
+            # print('LAT AND LON')
+            # if lat is not None and long is not None and km is not None:
+            #     if not isinstance(lat, float) or not isinstance(long, float):
+            #         #handle the error or raise an exception
+            #         raise ValueError("lat and lon must be of type float")
+            #     if km is not None:
+            #         if not isinstance(km, int):
+            #             #handle the error or raise an exception
+            #             raise ValueError("km must be of type int")
+            #     distance_query = Q(
+            #         Latitude=(lat - km / 111, lat + km / 111),
+            #         Longitude=(lon - km / (111 * math.cos(lat)), lon + km / (111 * math.cos(lat)))
+            #     )
+
+            ############################################
+            #perform the final query
+            # print(text_query)
+            # print(category_query)
+            # query = query.filter(text_query | distance_query | keyword_query | category_query)
+            query = query.filter(text_query | category_query | keyword_queries)
+            print(query)
+            paginator = CustomPagination()
+            paginated_query = paginator.paginate_queryset(query, request)
+            
+            # # Serialize the paginated results
+            serializer = PointOfInterestSerializer(paginated_query, many=True)
+
+            # # Return the paginated response
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             print(0)
             return Response({'exception': e}, status=500)
