@@ -2,11 +2,17 @@
   <div class="root">
     <Header />
     <div class="search-bar">
-      <SearchBar @search-complete="updateTypedPois"/>
+      <SearchBar :rows="rows" :page="page" @search-complete="updateTypedPois"/>
     </div>
 
     <div class="homepage" v-if="typedPois.length">
       <div class="sidebar">
+        <Paginator
+            :rows="rows"
+            :totalRecords="totalCount"
+            :rowsPerPageOptions="[10, 20, 30]"
+            @page="updatePage"
+        ></Paginator>
         <h2>Περιοχές Ενδιαφέροντος</h2>
         <div class="poi-list">
           <CustomCard
@@ -55,7 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import {onMounted, ref, watch} from "vue";
+import Paginator from 'primevue/paginator';
 import Header from "../components/common/Header.vue";
 import Dialog from "primevue/dialog";
 import axios from "axios";
@@ -65,21 +72,37 @@ import CustomCard from "../components/CustomCard/CustomCard.vue";
 import SearchBar from "../components/common/SearchBar.vue";
 
 
-
 let pois: any = ref([]);
+const rows = ref<number>(10);
+const page = ref<number>(1);
+
 const typedPois = ref<PointOfInterest[]>([]);
+const totalCount = ref<number>(typedPois.value.length);
 const isPoiModalVisible = ref(false);
 const selectedPoi = ref<PointOfInterest>();
 
+const updatePage = (newPage: any) => {
+  console.log(newPage);
+  page.value = newPage.page + 1;
+}
+
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:8000/ecoquest/poi/");
+    const response =
+        await axios.post("http://localhost:8000/ecoquest/search/pois/?page=1",{
+          start:1,
+          count: 10,
+        },{
+          headers:{
+            'Content-type': 'application/json'
+          }
+        });
     pois.value = response.data;
-    console.log(pois.value);
+
   } catch (error) {
-    console.error(error);
     alert(error);
   }
+
   pois.value.map((poi: any) => {
     typedPois.value.push({
       id: poi.PointOfInterestId,
@@ -90,14 +113,16 @@ onMounted(async () => {
       categoryId: poi.Categories,
     })
   })
-
+  totalCount.value = typedPois.value.length;
   console.log(pois.value);
+
 });
 
 const updateTypedPois = (searchData : any) => {
   console.log(searchData);
+  totalCount.value = searchData.count;
   typedPois.value = []
-  searchData.map((poi: any) => {
+  searchData.results.map((poi: any) => {
     typedPois.value.push({
       id: poi.PointOfInterestId,
       name: poi.Name,
@@ -108,6 +133,8 @@ const updateTypedPois = (searchData : any) => {
     })
   })
 }
+
+
 
 function onPoiClick(poi: PointOfInterest) {
   selectedPoi.value = poi;
