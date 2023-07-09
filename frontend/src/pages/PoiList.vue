@@ -57,6 +57,7 @@
             </div>
           </div>
           <div class="bottom">
+            <!-- TODO change isFavorite to selectedPoi?.isFavorite -->
             <div
               :class="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
               @click="onFavorite(selectedPoi)"
@@ -147,6 +148,7 @@ const updateTypedPois = (searchData: any) => {
 function onFavorite(poi: PointOfInterest | undefined) {
   console.log("poi", poi);
   isFavorite.value = !isFavorite.value;
+  //TODO add api call to backend to change favorite to true
 }
 function onPoiClick(poi: PointOfInterest) {
   selectedPoi.value = poi;
