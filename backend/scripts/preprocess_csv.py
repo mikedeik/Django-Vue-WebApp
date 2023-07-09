@@ -112,14 +112,13 @@ def create_final_dataframe(df, categoryIDs):
     new_df['perifereia'] = perifereiaID
     new_df['keywords'] = keywordsList
     #rearrange order of columns
-    new_df = new_df[['name', 'categories', 'perifereia', 'nomos', 'longitude', 'latitude', 'keywords']]
+    new_df = new_df[['name', 'categories', 'perifereia', 'nomos', 'longitude', 'latitude', 'keywords', 'description']]
 
     return new_df
 
 def preprocess(file, filename):
 
     #find the category corresponding to this file and save it to the database
-    #TO BE CHANGED IN ALL PROBABILITY
     categories = find_category(filename)
     categoryIDs = []
     for category in categories:
@@ -146,6 +145,11 @@ def preprocess(file, filename):
     else:
         prefecture_col = find_column(column_names, "prefecture")
 
+    #find the column that has the description
+    if "DESCRIPT" in column_names:
+        discr_column = "DESCRIPT"
+    else: 
+        discr_column = None
 
     #convert to another dataframe only with the needed data
     if periphery_col == None:
@@ -162,6 +166,12 @@ def preprocess(file, filename):
         else:
             new_df = df[[name_col, periphery_col, 'the_geom']].copy()
             new_df.rename(columns={name_col: 'name', periphery_col: 'perifereia'}, inplace=True)
+
+    if not discr_column == None:
+        new_df['description'] = df[discr_column]
+    else:
+        empty_discr = [None for i in range(len(df))]
+        new_df['description'] = empty_discr
 
     new_df['the_geom'] = geopandas.GeoSeries.from_wkt(new_df["the_geom"])
     gdf = geopandas.GeoDataFrame(new_df, geometry="the_geom")
@@ -212,6 +222,7 @@ def preprocess(file, filename):
     #create dataframe consisting of object ids (where appropriate)
     final_df = create_final_dataframe(df, categoryIDs)
     final_df.reset_index(drop=True, inplace=True)
+    print(final_df.head(4))
     return final_df
             
     

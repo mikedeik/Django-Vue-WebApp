@@ -50,6 +50,7 @@ class PointOfInterest(models.Model):
     CreatedDate = models.DateTimeField(default=timezone.now)
     KeyWords = models.CharField(max_length=2000, default="")
     IsFavoriteTo = models.ManyToManyField(User, null=True, blank=True)
+    Description = models.CharField(max_length=2500, null=True, blank=True)
 
     def __str__(self):
         return self.Name

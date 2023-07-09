@@ -304,6 +304,7 @@ class CreatePOIsAPIView(APIView):
                 longitude = df.loc[row_num, 'longitude']
                 latitude = df.loc[row_num, 'latitude']
                 keywords = df.loc[row_num, 'keywords']
+                description = df.loc[row_num, 'description']
                 try:
                     poi = PointOfInterest(
                         Name=name,
@@ -311,7 +312,8 @@ class CreatePOIsAPIView(APIView):
                         NomosId_id=nomos_id,
                         Longitude=longitude,
                         Latitude=latitude,
-                        KeyWords=keywords
+                        KeyWords=keywords,
+                        Description = description
                     )
                     poi.full_clean()  # Run model field validation
                     pois_to_create.append(poi)
