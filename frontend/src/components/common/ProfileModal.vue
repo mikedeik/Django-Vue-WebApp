@@ -30,9 +30,9 @@ const handleClick = (option: any) => {
     // localStorage.setItem("refreshToken", "");
     localStorage.clear();
     console.log("tokens deleted");
-    router.push({path: "login"});
-  }else {
-    router.push({path: option.route})
+    router.push({ path: "pois" });
+  } else {
+    router.push({ path: option.route });
   }
 };
 
