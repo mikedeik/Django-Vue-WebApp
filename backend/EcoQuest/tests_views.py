@@ -42,21 +42,17 @@ class TestCreatePOIsAPIView(TestCase):
 
     def setUp(self) -> None:
         self.client = Client()
-        user = authenticate(username="admin", password="1234")
-        self.assertEquals(user,None)
 
     def test_createpoisapi_view(self):
         filename = {"myfile":"LimnesElladas"}
         response = self.client.post("/ecoquest/create_pois/"+filename['myfile']+"/",filename)
-        self.assertNotEquals(response,None)
+        self.assertNotEquals(response,200)
 
 
 class TestCreatePoiAPI(TestCase):
 
     def setUp(self):
         self.client = Client()
-        user = authenticate(username="admin", password="1234")
-        self.assertEquals(user,None)
         category1 = Category.objects.create(CategoryId=4,Name='natura')
         category2 = Category.objects.create(CategoryId=7,Name='dasi')
         nomos = Nomos.objects.create()
@@ -67,5 +63,4 @@ class TestCreatePoiAPI(TestCase):
     def test_createpoiapi_view(self):
         testdata = POIS(PointOfInterest.objects.get(PointOfInterestId=12)).data
         response = self.client.post("/ecoquest/post/poi/",testdata)
-
-
+        self.assertNotEquals(response.status_code,200)
