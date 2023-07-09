@@ -62,7 +62,7 @@ const fixSearchData = async () => {
   let data : searchType = {
     start : rows.value,
     page : page.value,
-    count : page.value,
+    count : rows.value,
     text: null,
     filters: {
       categories: null,

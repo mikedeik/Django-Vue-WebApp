@@ -1,9 +1,6 @@
 <template>
   <div class="root">
     <Header />
-    <div class="search-bar">
-      <SearchBar :rows="rows" :page="page" @search-complete="updateTypedPois" />
-    </div>
 
     <div class="homepage" v-if="typedPois.length">
       <div class="sidebar">
@@ -59,7 +56,7 @@
           <div class="bottom">
             <!-- TODO change isFavorite to selectedPoi?.isFavorite -->
             <div
-              :class="selectedPoi?.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+              :class="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
               @click="onFavorite(selectedPoi)"
             ></div>
           </div>
@@ -78,7 +75,6 @@ import axios from "axios";
 import Map from "../components/common/Map.vue";
 import { PointOfInterest } from "../Types/PointOfInterest";
 import CustomCard from "../components/CustomCard/CustomCard.vue";
-import SearchBar from "../components/common/SearchBar.vue";
 import {addToFavorites} from "../API/APICalls.vue";
 
 let pois: any = ref([]);
@@ -97,28 +93,15 @@ const updatePage = (newPage: any) => {
 
 onMounted(async () => {
   try {
-    const response = await axios.post(
-      "http://localhost:8000/ecoquest/search/pois/?page=1",
-      {
-        start: 1,
-        count: 10,
-      },
-      {
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
-    // test
-    console.log(response.data);
-    totalCount.value = response.data.count;
-    pois.value = response.data.results;
+    const response = await axios.get(
+      "http://localhost:8000/ecoquest/favorites/");
+
+    pois.value = response.data;
   } catch (error) {
     alert(error);
   }
 
-  pois.value.map( async (poi: any) => {
-    const favorite = await setIsFavorite(poi);
+  pois.value.map((poi: any) => {
     typedPois.value.push({
       id: poi.PointOfInterestId,
       name: poi.Name,
@@ -126,66 +109,37 @@ onMounted(async () => {
       longitude: poi.Longitude,
       latitude: poi.Latitude,
       categoryId: poi.Categories,
-      isFavorite: favorite
     });
   });
   totalCount.value = typedPois.value.length;
   console.log(pois.value);
 });
 
-const setIsFavorite = (poi: any) => {
-  const user_id = localStorage.getItem('user_id');
-  if(!user_id){
-
-    return false;
-  }
-  if(poi?.IsFavoriteTo.find((id: number) => id === parseInt(user_id))) {
-    return  true;
-  }
-
-  return false;
-}
-
-const updateTypedPois = (searchData: any) => {
-  console.log(searchData);
-
-  totalCount.value = searchData.count;
-  typedPois.value = [];
-  searchData.results.map((poi: any) => {
-    typedPois.value.push({
-      id: poi.PointOfInterestId,
-      name: poi.Name,
-      description: poi.Description,
-      longitude: poi.Longitude,
-      latitude: poi.Latitude,
-      categoryId: poi.Categories,
-      isFavorite: setIsFavorite(poi)
-    });
-  });
-};
 async function onFavorite (poi: PointOfInterest) {
   console.log("poi", poi);
 
   //TODO add api call to backend to change favorite to true
-  if (!poi.isFavorite) {
+  if(!isFavorite.value){
     const response = await addToFavorites(poi.id, true);
-    if (response.success) {
-      poi.isFavorite = !isFavorite.value;
-    } else {
-      alert(response.message);
+    if(response.success){
+       isFavorite.value = !isFavorite.value;
     }
-  } else {
-    const response = await addToFavorites(poi.id, false);
-    if (response.success) {
-      poi.isFavorite = !isFavorite.value;
-    } else {
+    else {
       alert(response.message);
     }
   }
+  else {
+     const response = await addToFavorites(poi.id, false);
+      if(response.success){
+        isFavorite.value = !isFavorite.value;
+      }
+    else {
+      alert(response.message);
+  }
 }
-function onPoiClick(poi: PointOfInterest) {
-    selectedPoi.value = poi;
-    isPoiModalVisible.value = true;
+// function onPoiClick(poi: PointOfInterest) {
+//   selectedPoi.value = poi;
+//   isPoiModalVisible.value = true;
 }
 
 </script>

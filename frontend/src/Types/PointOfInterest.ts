@@ -7,5 +7,6 @@ export interface PointOfInterest {
     longitude: number;
     latitude: number;
     categoryId: number[];
+    isFavorite: boolean;
 }
   

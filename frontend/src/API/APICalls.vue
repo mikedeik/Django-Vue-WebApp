@@ -118,7 +118,7 @@ const CreateSavedSearch = async (data : any) => {
   console.log(data);
   // alert("Called");
   const accessToken = await getAccessToken();
-  alert(accessToken);
+
   if(!accessToken){
     return { success: false, message : "You must Login to create a saved search", data: null}
   }
@@ -161,5 +161,26 @@ const SearchPois = async (data: any) => {
   }
 
 }
-export { loginAuthenticate, register, getCategories, CreateSavedSearch, SearchPois };
+
+const addToFavorites = async (poiId : number, favorite : boolean) => {
+
+  const accessToken = await getAccessToken();
+
+  if(!accessToken){
+    return { success: false, message : "You must Login to add to favorites", data: null}
+  }
+  const response = await axios.put(`http://127.0.0.1:8000/ecoquest/addtofavorites/${poiId}/`,{ favorite : favorite},{
+     headers: {
+          "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + accessToken
+        },
+    });
+  if(response.status === 202) {
+    return { success: true, message : "Added to favorites", data: response.data}
+  }
+  return { success: false, message : "Failed to add to favorites", data: null}
+
+}
+
+export { loginAuthenticate, register, getCategories, CreateSavedSearch, SearchPois, addToFavorites };
 </script>

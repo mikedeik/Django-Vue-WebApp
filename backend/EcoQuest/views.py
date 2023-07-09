@@ -137,7 +137,10 @@ class AddToFavorites(APIView):
     def put(self, request, PoiId):
         user = User.objects.get(id=request.user.id)
         poi = PointOfInterest.objects.get(PointOfInterestId=PoiId)
-        poi.IsFavoriteTo.add(user)
+        if request.data['favorite']:
+            poi.IsFavoriteTo.add(user)
+        else:
+            poi.IsFavoriteTo.remove(user)
         return Response({"PointOfInterestId": poi.PointOfInterestId}, status=status.HTTP_202_ACCEPTED)
 
 
