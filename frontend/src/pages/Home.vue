@@ -6,24 +6,11 @@
 
     <div class="content">
       <div class="search-bar">
-        <div class="location">
-          <div class="location-input">
-            <InputText placeholder="Search for POI" v-model="location" />
-          </div>
-        </div>
-        <div class="poi-type">
-          <MultiSelect v-model="selectedCategories" display="chip" :options="categories" optionLabel="name"
-            placeholder="Κατηγορίες" />
-        </div>
-        <!-- <div class="nomoi-type">
-          <MultiSelect v-model="selectedNomoi" display="chip" :options="nomoi" optionLabel="name" placeholder="Νομοί" />
-        </div> -->
-        <div class="search-icon">
-          <div class="pi pi-search" @click="router.push({ path: 'pois' })" />
-        </div>
+        <SearchBar/>
       </div>
       <div class="main-content">
         <div class="main-content-title">Not sure where to go? Perfect</div>
+        <Button class="main-content-button">I'm flexible</Button>
       </div>
     </div>
   </div>
@@ -37,35 +24,11 @@ import MultiSelect from "primevue/multiselect";
 import { useRouter } from "vue-router";
 import { Category } from "../Types/Category";
 import { getCategories } from "../API/APICalls.vue";
+import SearchBar from "../components/common/SearchBar.vue";
 const router = useRouter();
 
 const categories = ref<Category[]>([]);
 const selectedCategories = ref<Category[]>([]);
-const poiOptions = ref([
-  {
-    name: "Λίμνες",
-    value: "Limnes",
-  },
-  {
-    name: "Παρκα",
-    value: "Parka",
-  },
-]);
-
-const selectedPois = ref<Array<{ name: string; value: string }>>([]);
-
-const activityOptions = ref([
-  {
-    name: "Πεζοπορία",
-    value: "Pezoporia",
-  },
-  {
-    name: "Κύνηγι",
-    value: "Kinigi",
-  },
-]);
-
-const selectedActivities = ref<Array<{ name: string; value: string }>>([]);
 
 const location = ref("");
 
@@ -110,9 +73,9 @@ onMounted(() => {
 .search-bar {
   height: 10%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  //display: flex;
+  //align-items: center;
+  //justify-content: space-evenly;
 }
 
 .main-content {

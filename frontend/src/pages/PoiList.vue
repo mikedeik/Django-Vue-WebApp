@@ -1,12 +1,16 @@
 <template>
   <div class="root">
     <Header />
+    <div class="search-bar">
+      <SearchBar/>
+    </div>
+
     <div class="homepage" v-if="typedPois.length">
       <div class="sidebar">
-        <h2>PoiList</h2>
+        <h2>Περιοχές Ενδιαφέροντος</h2>
         <div class="poi-list">
           <CustomCard
-            v-for="(poi, index) in typedPois"
+            v-for="poi in typedPois"
             :key="poi.id"
             :poi="poi"
             @click="onPoiClick(poi)"
@@ -48,47 +52,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import Header from "../components/common/Header.vue";
-import InputText from "primevue/inputtext";
-import MultiSelect from "primevue/multiselect";
 import Dialog from "primevue/dialog";
-import { useRouter } from "vue-router";
 import axios from "axios";
 import Map from "../components/common/Map.vue";
 import { PointOfInterest } from "../Types/PointOfInterest";
 import CustomCard from "../components/CustomCard/CustomCard.vue";
-interface Poi {
-  name: string;
-  CategoryId: number;
-  // Add other properties here if necessary
-}
-const mockPoints: PointOfInterest[] = [
-  {
-    id: 1,
-    name: "Point of Interest 1",
-    description: "Description 1",
-    longitude: 23.737539,
-    latitude: 37.98381,
-    categoryId: [1],
-  },
-  {
-    id: 2,
-    name: "Point of Interest 2",
-    description: "Description 2",
-    longitude: 23.787432,
-    latitude: 37.98372,
-    categoryId: [2],
-  },
-  {
-    id: 3,
-    name: "Point of Interest 3",
-    description: "Description 3",
-    longitude: 23.287432,
-    latitude: 37.48372,
-    categoryId: [2],
-  },
-];
+import SearchBar from "../components/common/SearchBar.vue";
+
+
 
 let pois: any = ref([]);
 const typedPois = ref<PointOfInterest[]>([]);
@@ -143,7 +116,9 @@ function onPoiClick(poi: PointOfInterest) {
   overflow-y: scroll;
   padding: 16px;
 }
-
+.search-bar{
+  padding-bottom: 20px;
+}
 .poi-list {
   margin-bottom: 20px;
 }

@@ -1,5 +1,6 @@
 import io
 import pandas as pd
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -34,6 +35,7 @@ class RegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Create your views here.
+
 
 class CreateCategory(APIView):
 
@@ -95,7 +97,6 @@ class NotificationsList(APIView):
 
     def get(self, request):
         user = User.objects.get(id=request.user.id)
-        print(user.id)
         notifications = Notification.objects.all().filter(Retrieved=False)
         serializer = NotificationListSerializer(notifications, many=True)
         return Response(serializer.data)
@@ -139,6 +140,35 @@ class PoIDetails(APIView):
     def get(self, request, PoIID):
         poi = self.get_object(PoIID)
         serializer = PointOfInterestSerializer(poi)
+        return Response(serializer.data)
+
+
+class SearchPoisView(APIView):
+
+    def post(self, request):
+        pois = PointOfInterest.objects.all()
+
+        if 'text' in request.data:
+            pois = pois.filter(Name__contains=request.data['text'])
+
+        if 'categories' in request.data:
+            pois = pois.filter(Categories__in=request.data['categories'])
+
+        if 'keywords' in request.data:
+            # add to lower when we fixed the data
+            list_of_keywords = [keyword for keyword in request.data['keywords']]
+            keyword_queries = Q()
+            for keyword in list_of_keywords:
+                keyword_queries |= Q(KeyWords__icontains=keyword)
+            pois = pois.filter(keyword_queries)
+
+        # Additional filtering logic (e.g., distance filter) can be added here
+
+        # Retrieve the final list of pois
+        pois = pois.distinct()
+
+        # Serialize and return the pois as a response
+        serializer = PointOfInterestSerializer(pois, many=True)
         return Response(serializer.data)
 
 

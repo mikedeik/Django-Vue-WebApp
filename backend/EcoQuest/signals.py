@@ -41,11 +41,11 @@ def create_notification(notification_text, instance, categories):
 
                 notification_data = {
                     'id': notification.NotificationId,
-                    'message': notification.Text
+                    'message': notification.Text,
+                    'PoiId': instance.PointOfInterestId
                 }
 
                 channel_layer = get_channel_layer()
-                print(channel_layer)
                 event = {
                     'type': 'message',
                     'data': notification_data
