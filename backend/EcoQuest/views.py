@@ -241,7 +241,7 @@ class SearchPoisView(APIView):
             # print(category_query)
             # query = query.filter(text_query | distance_query | keyword_query | category_query)
             # query = query.filter(text_query | category_query | keyword_queries)
-            query = query.filter(text_query).filter(category_query).filter(keyword_queries)
+            query = query.filter(text_query).filter(category_query).filter(keyword_queries).distinct()
             print(query)
             paginator = CustomPagination()
             paginated_query = paginator.paginate_queryset(query, request)
