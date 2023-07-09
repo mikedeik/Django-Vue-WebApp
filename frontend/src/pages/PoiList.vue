@@ -2,16 +2,16 @@
   <div class="root">
     <Header />
     <div class="search-bar">
-      <SearchBar :rows="rows" :page="page" @search-complete="updateTypedPois"/>
+      <SearchBar :rows="rows" :page="page" @search-complete="updateTypedPois" />
     </div>
 
     <div class="homepage" v-if="typedPois.length">
       <div class="sidebar">
         <Paginator
-            :rows="rows"
-            :totalRecords="totalCount"
-            :rowsPerPageOptions="[10, 20, 30]"
-            @page="updatePage"
+          :rows="rows"
+          :totalRecords="totalCount"
+          :rowsPerPageOptions="[10, 20, 30]"
+          @page="updatePage"
         ></Paginator>
         <h2>Περιοχές Ενδιαφέροντος</h2>
         <div class="poi-list">
@@ -21,16 +21,17 @@
             :poi="poi"
             @click="onPoiClick(poi)"
           />
-
         </div>
       </div>
       <div class="map-container">
-        <Map :points-of-interest="typedPois" key="map" @clickedPoi="onPoiClick" />
+        <Map
+          :points-of-interest="typedPois"
+          key="map"
+          @clickedPoi="onPoiClick"
+        />
       </div>
     </div>
-    <div v-else>
-      No Data to display
-    </div>
+    <div v-else>No Data to display</div>
     <Dialog
       v-model:visible="isPoiModalVisible"
       modal
@@ -39,7 +40,6 @@
     >
       <div class="container">
         <div class="image-container">
-
           <img
             class="image"
             src="https://fastly.picsum.photos/id/949/536/354.jpg?hmac=biBe6mOyyM3zjcsRQcyxfkHTNxHLyMzX2-x9rc-Ef8c"
@@ -47,12 +47,20 @@
           />
         </div>
         <div class="info-container">
-          <h1 class="info-row">{{ selectedPoi?.name }}</h1>
-          <h3 class="info-row">{{ selectedPoi?.description }}</h3>
-          <div class="info-row">
-            Coordinates: {{ selectedPoi?.latitude }},{{
-              selectedPoi?.longitude
-            }}
+          <div class="top">
+            <h1 class="info-row">{{ selectedPoi?.name }}</h1>
+            <h3 class="info-row">{{ selectedPoi?.description }}</h3>
+            <div class="info-row">
+              Coordinates: {{ selectedPoi?.latitude }},{{
+                selectedPoi?.longitude
+              }}
+            </div>
+          </div>
+          <div class="bottom">
+            <div
+              :class="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+              @click="onFavorite(selectedPoi)"
+            ></div>
           </div>
         </div>
       </div>
@@ -61,8 +69,8 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, watch} from "vue";
-import Paginator from 'primevue/paginator';
+import { onMounted, ref, watch } from "vue";
+import Paginator from "primevue/paginator";
 import Header from "../components/common/Header.vue";
 import Dialog from "primevue/dialog";
 import axios from "axios";
@@ -70,7 +78,6 @@ import Map from "../components/common/Map.vue";
 import { PointOfInterest } from "../Types/PointOfInterest";
 import CustomCard from "../components/CustomCard/CustomCard.vue";
 import SearchBar from "../components/common/SearchBar.vue";
-
 
 let pois: any = ref([]);
 const rows = ref<number>(10);
@@ -80,28 +87,30 @@ const typedPois = ref<PointOfInterest[]>([]);
 const totalCount = ref<number>(typedPois.value.length);
 const isPoiModalVisible = ref(false);
 const selectedPoi = ref<PointOfInterest>();
-
+const isFavorite = ref(false);
 const updatePage = (newPage: any) => {
   console.log(newPage);
   page.value = newPage.page + 1;
-}
+};
 
 onMounted(async () => {
   try {
-    const response =
-        await axios.post("http://localhost:8000/ecoquest/search/pois/?page=1",{
-          start:1,
-          count: 10,
-        },{
-          headers:{
-            'Content-type': 'application/json'
-          }
-        });
+    const response = await axios.post(
+      "http://localhost:8000/ecoquest/search/pois/?page=1",
+      {
+        start: 1,
+        count: 10,
+      },
+      {
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
     // test
     console.log(response.data);
     totalCount.value = response.data.count;
     pois.value = response.data.results;
-
   } catch (error) {
     alert(error);
   }
@@ -114,17 +123,16 @@ onMounted(async () => {
       longitude: poi.Longitude,
       latitude: poi.Latitude,
       categoryId: poi.Categories,
-    })
-  })
+    });
+  });
   totalCount.value = typedPois.value.length;
   console.log(pois.value);
-
 });
 
-const updateTypedPois = (searchData : any) => {
+const updateTypedPois = (searchData: any) => {
   console.log(searchData);
   totalCount.value = searchData.count;
-  typedPois.value = []
+  typedPois.value = [];
   searchData.results.map((poi: any) => {
     typedPois.value.push({
       id: poi.PointOfInterestId,
@@ -133,12 +141,13 @@ const updateTypedPois = (searchData : any) => {
       longitude: poi.Longitude,
       latitude: poi.Latitude,
       categoryId: poi.Categories,
-    })
-  })
+    });
+  });
+};
+function onFavorite(poi: PointOfInterest | undefined) {
+  console.log("poi", poi);
+  isFavorite.value = !isFavorite.value;
 }
-
-
-
 function onPoiClick(poi: PointOfInterest) {
   selectedPoi.value = poi;
   isPoiModalVisible.value = true;
@@ -164,7 +173,7 @@ function onPoiClick(poi: PointOfInterest) {
   overflow-y: scroll;
   padding: 16px;
 }
-.search-bar{
+.search-bar {
   padding-bottom: 20px;
 }
 .poi-list {
@@ -204,11 +213,26 @@ function onPoiClick(poi: PointOfInterest) {
   flex: 1;
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
+  justify-content: space-between;
+}
+.top {
+  display: flex;
+  flex-direction: column;
   padding-left: 20px;
 }
-
+.bottom {
+  display: flex;
+  justify-content: end;
+}
 .info-row {
   margin-bottom: 10px;
+}
+.pi-heart {
+  font-size: 32px;
+}
+
+.pi-heart-fill {
+  font-size: 32px;
+  color: red;
 }
 </style>
