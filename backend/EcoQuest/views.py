@@ -18,6 +18,8 @@ import codecs
 from rest_framework import generics
 from scripts.preprocess_csv import preprocess
 from django.core.exceptions import ValidationError
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+
 
 
 # class RegisterView(generics.CreateAPIView):
@@ -144,32 +146,54 @@ class PoIDetails(APIView):
 
 
 class SearchPoisView(APIView):
+    pagination_class = PageNumberPagination
 
     def post(self, request):
-        pois = PointOfInterest.objects.all()
+        body = request.data
+        text = body.get('text', '')
+        filters = body.get('filters', {})
 
-        if 'text' in request.data:
-            pois = pois.filter(Name__contains=request.data['text'])
 
-        if 'categories' in request.data:
-            pois = pois.filter(Categories__in=request.data['categories'])
+        try:
+            page = body.get('start', 1)
+            count = body['count']
 
-        if 'keywords' in request.data:
-            # add to lower when we fixed the data
-            list_of_keywords = [keyword for keyword in request.data['keywords']]
-            keyword_queries = Q()
-            for keyword in list_of_keywords:
-                keyword_queries |= Q(KeyWords__icontains=keyword)
-            pois = pois.filter(keyword_queries)
+            print(body)
+            print(page)
+            print(count)
+            print(text)
+            print(filters)
 
-        # Additional filtering logic (e.g., distance filter) can be added here
+            #if filters are given
+            if not filters == {}:
+                distance = filters.get('distance', {})
 
-        # Retrieve the final list of pois
-        pois = pois.distinct()
+                #get distance filters if any
+                if not distance == {}:
+                    long = distance['lon']
+                    lat = distance['lat']
+                    km = distance['km']
+                    print(long)
+                    print(lat)
+                    print(km)
 
-        # Serialize and return the pois as a response
-        serializer = PointOfInterestSerializer(pois, many=True)
-        return Response(serializer.data)
+                #get categories if any
+                category_array = filters.get('categories', [])
+
+                #get keywords if any
+                keywords = filters.get('keywords', [])
+
+                print(keywords)
+                print(category_array)
+                
+
+        except Exception as e:
+            print(0)
+            return Response({'exception': e}, status=500)
+        return Response()######
+
+
+        
 
 
 class CreatePOIsAPIView(APIView):
