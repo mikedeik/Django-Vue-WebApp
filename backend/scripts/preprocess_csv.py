@@ -103,7 +103,7 @@ def create_final_dataframe(df, categoryIDs):
         keywords = []
         for word in new_str:
             if not word == '': 
-                keywords.append(word)
+                keywords.append(word.lower())
         keywordsList.append(','.join(keywords))
 
     #add category column

@@ -206,7 +206,7 @@ class SearchPoisView(APIView):
             keyword_queries = Q()
             if keywords:
                 for keyword in keywords:
-                    keyword_queries |= Q(KeyWords__icontains=keyword)
+                    keyword_queries |= Q(KeyWords__icontains=keyword.lower())
 
             # get pois for a specific distance in kms
             distance_query = Q()
