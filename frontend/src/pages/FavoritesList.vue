@@ -4,13 +4,7 @@
 
     <div class="homepage" v-if="typedPois.length">
       <div class="sidebar">
-        <Paginator
-          :rows="rows"
-          :totalRecords="totalCount"
-          :rowsPerPageOptions="[10, 20, 30]"
-          @page="updatePage"
-        ></Paginator>
-        <h2>Περιοχές Ενδιαφέροντος</h2>
+        <h2>Αγαπημένες Περιοχές Ενδιαφέροντος</h2>
         <div class="poi-list">
           <CustomCard
             v-for="poi in typedPois"
@@ -56,7 +50,7 @@
           <div class="bottom">
             <!-- TODO change isFavorite to selectedPoi?.isFavorite -->
             <div
-              :class="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+              :class="selectedPoi?.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
               @click="onFavorite(selectedPoi)"
             ></div>
           </div>
@@ -68,40 +62,32 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import Paginator from "primevue/paginator";
 import Header from "../components/common/Header.vue";
 import Dialog from "primevue/dialog";
-import axios from "axios";
 import Map from "../components/common/Map.vue";
 import { PointOfInterest } from "../Types/PointOfInterest";
 import CustomCard from "../components/CustomCard/CustomCard.vue";
-import {addToFavorites} from "../API/APICalls.vue";
+import {addToFavorites, getFavorites} from "../API/APICalls.vue";
 
 let pois: any = ref([]);
-const rows = ref<number>(10);
-const page = ref<number>(1);
+
 
 const typedPois = ref<PointOfInterest[]>([]);
 const totalCount = ref<number>(typedPois.value.length);
 const isPoiModalVisible = ref(false);
 const selectedPoi = ref<PointOfInterest>();
 const isFavorite = ref(false);
-const updatePage = (newPage: any) => {
-  console.log(newPage);
-  page.value = newPage.page + 1;
-};
+
 
 onMounted(async () => {
   try {
-    const response = await axios.get(
-      "http://localhost:8000/ecoquest/favorites/");
-
+    const response = await getFavorites();
     pois.value = response.data;
   } catch (error) {
     alert(error);
   }
 
-  pois.value.map((poi: any) => {
+  pois.value.map( async (poi: any) => {
     typedPois.value.push({
       id: poi.PointOfInterestId,
       name: poi.Name,
@@ -109,37 +95,37 @@ onMounted(async () => {
       longitude: poi.Longitude,
       latitude: poi.Latitude,
       categoryId: poi.Categories,
+      isFavorite: true,
     });
   });
   totalCount.value = typedPois.value.length;
   console.log(pois.value);
 });
 
+
 async function onFavorite (poi: PointOfInterest) {
   console.log("poi", poi);
 
   //TODO add api call to backend to change favorite to true
-  if(!isFavorite.value){
+  if (!poi.isFavorite) {
     const response = await addToFavorites(poi.id, true);
-    if(response.success){
-       isFavorite.value = !isFavorite.value;
-    }
-    else {
+    if (response.success) {
+      poi.isFavorite = !isFavorite.value;
+    } else {
       alert(response.message);
     }
-  }
-  else {
-     const response = await addToFavorites(poi.id, false);
-      if(response.success){
-        isFavorite.value = !isFavorite.value;
-      }
-    else {
+  } else {
+    const response = await addToFavorites(poi.id, false);
+    if (response.success) {
+      poi.isFavorite = !isFavorite.value;
+    } else {
       alert(response.message);
+    }
   }
 }
-// function onPoiClick(poi: PointOfInterest) {
-//   selectedPoi.value = poi;
-//   isPoiModalVisible.value = true;
+function onPoiClick(poi: PointOfInterest) {
+  selectedPoi.value = poi;
+  isPoiModalVisible.value = true;
 }
 
 </script>

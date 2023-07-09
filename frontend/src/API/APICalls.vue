@@ -162,6 +162,24 @@ const SearchPois = async (data: any) => {
 
 }
 
+const getFavorites = async () => {
+  const accessToken = await getAccessToken();
+  if(!accessToken){
+    return { success: false, message : "You must Login see your favorites", data: null}
+  }
+  const response = await axios.get(`http://127.0.0.1:8000/ecoquest/favorites/`,{
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ' + accessToken
+    },
+  });
+
+  if(response.status === 200) {
+    return { success: true, message : "200 OK", data: response.data}
+  }
+  return { success: false, message : "Failed to fetch favorites", data: null}
+}
+
 const addToFavorites = async (poiId : number, favorite : boolean) => {
 
   const accessToken = await getAccessToken();
@@ -182,5 +200,19 @@ const addToFavorites = async (poiId : number, favorite : boolean) => {
 
 }
 
-export { loginAuthenticate, register, getCategories, CreateSavedSearch, SearchPois, addToFavorites };
+const getPoi = async (poiId: number) => {
+  try{
+    const response = await
+      axios.get(`http://127.0.0.1:8000/ecoquest/pois/${poiId}/`);
+    if(response.status === 200){
+      response.data.success = true;
+      return response.data;
+    }
+  } catch (e: any) {
+    return {error: e.message , success:false}
+  }
+}
+
+export { loginAuthenticate, register, getCategories, CreateSavedSearch,
+  SearchPois, addToFavorites, getFavorites , getPoi};
 </script>

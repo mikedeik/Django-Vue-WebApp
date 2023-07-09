@@ -4,18 +4,52 @@
 
   <OverlayPanel ref="op">
     <div class="op-container">
-      <template v-for="notification in notificationsInc" :key="notification.id">
+      <div v-for="notification in notificationsInc" :key="notification.id" @click="openNotification(notification)">
         <div class="notification">
           <div class="notification-title">
-            {{ notification.id }}
+            {{ notification.title }}
           </div>
           <div class="notification-content">
             {{ notification.message }}
           </div>
         </div>
-      </template>
+      </div>
     </div>
   </OverlayPanel>
+  <Dialog
+      v-model:visible="isPoiModalVisible"
+      modal
+      :header="selectedPoi?.name || 'POI'"
+      :style="{ width: '50vw' }"
+    >
+      <div class="container">
+        <div class="image-container">
+          <img
+            class="image"
+            src="https://fastly.picsum.photos/id/949/536/354.jpg?hmac=biBe6mOyyM3zjcsRQcyxfkHTNxHLyMzX2-x9rc-Ef8c"
+            alt="Image"
+          />
+        </div>
+        <div class="info-container">
+          <div class="top">
+            <h1 class="info-row">{{ selectedPoi?.name }}</h1>
+            <h3 class="info-row">{{ selectedPoi?.description }}</h3>
+            <div class="info-row">
+              Coordinates: {{ selectedPoi?.latitude }},{{
+                selectedPoi?.longitude
+              }}
+            </div>
+          </div>
+          <div class="bottom">
+
+            <div
+              :class="selectedPoi?.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+
+            ></div>
+          </div>
+        </div>
+      </div>
+    </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -23,25 +57,37 @@
 import { useRouter } from "vue-router";
 import {onMounted, ref} from "vue";
 import OverlayPanel from "primevue/overlaypanel";
+import Dialog from "primevue/dialog";
+import {PointOfInterest} from "../../Types/PointOfInterest";
+import {getPoi} from "../../API/APICalls.vue";
 
 const router = useRouter();
-//TODO fix
-const notificationCount = ref(2);
 const props = defineProps(['notificationsInc']);
-const notifications = ref([
-  {
-    title: "New POI in Athens",
-    content: " POI added in your search",
-  },
-  {
-    title: "New POI in Syros",
-    content: " POI added in your search",
-  },
-]);
+const isPoiModalVisible = ref(false);
+const selectedPoi = ref<PointOfInterest>();
+
 const op = ref();
 const toggle = (event: unknown) => {
   op.value.toggle(event);
 };
+
+const openNotification = async (notification: any) => {
+  const response = await getPoi(notification.PoiId);
+  if(response.success){
+    selectedPoi.value = {
+      id: response.PointOfInterestId,
+      name: response.Name,
+      description: response.Description,
+      longitude: response.Longitude,
+      latitude: response.Latitude,
+      categoryId: response.Categories,
+      isFavorite: true,
+    };
+    isPoiModalVisible.value = true;
+
+  }
+
+}
 
 onMounted(() => {
   console.log('notifications' + props.notificationsInc);

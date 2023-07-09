@@ -278,6 +278,16 @@ class SearchPoisView(APIView):
             print(e)
             return Response({'exception': e}, status=500)
 
+
+class FavoritesList(APIView):
+
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        user = User.objects.get(id=request.user.id)
+        pois = PointOfInterest.objects.all().filter(IsFavoriteTo=user)
+        serializer = PointOfInterestSerializer(pois, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class CreatePOIsAPIView(APIView):
 
     parser_classes = [MultiPartParser, FormParser]

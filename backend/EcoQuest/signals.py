@@ -12,18 +12,8 @@ def poi_categories_changed(sender, instance, action, reverse, model, pk_set, **k
         if not reverse:
             # Get the full set of categories
             categories = Category.objects.filter(pk__in=pk_set)
-            notification_text = f"New POI '{instance.Name}'"
+            notification_text = f"Νέα Περιοχή Ενδιαφέροντος '{instance.Name}'"
             create_notification(notification_text, instance, categories)
-
-# @receiver(post_save, sender=PointOfInterest)
-# def poi_created(sender, instance, created, **kwargs):
-#     if created:
-#         notification_text = f"New POI '{instance.Name}'"
-#
-#         categories = instance.Categories.all()
-#         poi = PointOfInterest.objects.get(pk=instance.PointOfInterestId)
-#
-#         create_notification(notification_text, instance)
 
 
 # For every search in the database create a notification
@@ -32,7 +22,6 @@ def create_notification(notification_text, instance, categories):
     saved_searches = SavedSearch.objects.all().filter(Categories__in=categories).distinct()
     if saved_searches:
         for search in saved_searches:
-            print(pois_within_radius(instance, search))
             if pois_within_radius(instance, search):
                 notification = Notification(UserId=search.UserId,
                                             PointOfInterestId=instance,
@@ -41,6 +30,7 @@ def create_notification(notification_text, instance, categories):
 
                 notification_data = {
                     'id': notification.NotificationId,
+                    'title': 'Μόλις Δημιουργήθηκε Μια νέα Περιοχή',
                     'message': notification.Text,
                     'PoiId': instance.PointOfInterestId
                 }
@@ -50,8 +40,7 @@ def create_notification(notification_text, instance, categories):
                     'type': 'message',
                     'data': notification_data
                 }
-                print("all good here")
-                print(search.UserId.id)
+
                 async_to_sync(channel_layer.group_send)(
                     f"user_{search.UserId.id}",
                     event

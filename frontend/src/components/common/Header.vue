@@ -45,10 +45,7 @@ onMounted(() => {
   } else {
     isLogged.value = false;
   }
-  notifications.value.push({
-    id: 1,
-    message: 'test'
-  });
+
   const user_id = localStorage.getItem("user_id");
   if(user_id){
     const socketUrl = `ws://localhost:8000/ws/notifications/${user_id}/`;

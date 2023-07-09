@@ -14,6 +14,7 @@ import Notification from "./components/common/Notification.vue";
 import Register from "./pages/Register.vue";
 import NotificationTest from "./pages/NotificationTest.vue";
 import PoiList from "./pages/PoiList.vue";
+import FavoritesList from "./pages/FavoritesList.vue";
 export function initRouter(): Router {
   const routes: RouteRecordRaw[] = [
     { path: "/", redirect: "/home" },
@@ -27,6 +28,10 @@ export function initRouter(): Router {
     },
     {
       path: "/favorites",
+      component: FavoritesList,
+    },
+    {
+      path: "/createsearch",
       component: Favorites,
     },
     {

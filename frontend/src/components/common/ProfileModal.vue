@@ -26,8 +26,6 @@ const op = ref();
 const handleClick = (option: any) => {
   console.log(option);
   if (option.text === "Logout") {
-    // localStorage.setItem("accessToken", "");
-    // localStorage.setItem("refreshToken", "");
     localStorage.clear();
     console.log("tokens deleted");
     router.push({ path: "pois" });
@@ -49,22 +47,22 @@ const guestOptions = [
     route: "/login",
   },
   {
-    text: "FAQ",
-    route: "/faq",
+    text: "Favorites",
+    route: "/favorites",
   },
 ];
 const userOptions = [
   {
-    text: "My Profile",
+    text: "Το Προφίλ μου",
     route: "/profile",
   },
   {
-    text: "Favorites",
-    route: "/favorites",
+    text: "Δημιουργία Αναζήτησης",
+    route: "/createsearch",
   },
   {
-    text: "FAQ",
-    route: "/faq",
+    text: "Αγαπημένα",
+    route: "/favorites",
   },
   {
     text: "Logout",

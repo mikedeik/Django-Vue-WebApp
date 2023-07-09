@@ -23,11 +23,8 @@ import { Category } from "../Types/Category";
 import { getCategories } from "../API/APICalls.vue";
 import SearchBar from "../components/common/SearchBar.vue";
 const router = useRouter();
-
 const categories = ref<Category[]>([]);
-const selectedCategories = ref<Category[]>([]);
 
-const location = ref("");
 
 onMounted(() => {
 
