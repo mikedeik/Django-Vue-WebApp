@@ -27,3 +27,4 @@ RUN python manage.py collectstatic --no-input
 
 # Define the command to run your Django app using Daphne
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "backend.asgi:application"]
+# CMD ["daphne", "-e", "ssl:port=8000:interface=0.0.0.0:privateKey=key.pem:certKey=cert.pem", "backend.asgi:application"]
