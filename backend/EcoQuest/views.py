@@ -148,13 +148,13 @@ class SearchPoisView(APIView):
     def post(self, request):
         pois = PointOfInterest.objects.all()
 
-        if 'text' in request.data:
+        if request.data['text']:
             pois = pois.filter(Name__contains=request.data['text'])
 
-        if 'categories' in request.data:
+        if request.data['categories']:
             pois = pois.filter(Categories__in=request.data['categories'])
 
-        if 'keywords' in request.data:
+        if request.data['keywords']:
             # add to lower when we fixed the data
             list_of_keywords = [keyword for keyword in request.data['keywords']]
             keyword_queries = Q()
@@ -169,7 +169,7 @@ class SearchPoisView(APIView):
 
         # Serialize and return the pois as a response
         serializer = PointOfInterestSerializer(pois, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreatePOIsAPIView(APIView):

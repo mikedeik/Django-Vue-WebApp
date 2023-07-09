@@ -10,7 +10,7 @@
       </div>
       <div class="main-content">
         <div class="main-content-title">Not sure where to go? Perfect</div>
-        <Button class="main-content-button">I'm flexible</Button>
+        <Button class="main-content-button" @click="router.push({path: 'pois'})">I'm flexible</Button>
       </div>
     </div>
   </div>
