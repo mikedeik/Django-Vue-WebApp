@@ -11,6 +11,13 @@ COPY requirements.txt .
 RUN python -m venv venv
 RUN /bin/bash -c "source venv/bin/activate"
 
+# Install GDAL dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    gdal-bin \
+    libgdal-dev \
+    python3-gdal
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Django project code into the container
