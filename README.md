@@ -5,27 +5,11 @@
 - ΤΟΥΛΙΟΣ ΜΑΤΘΑΙΟΣ 1115201000170
 - ΨΑΡΡΟΣ ΙΩΑΝΝΗΣ 1115201800216
 
+Read docs for more info
+
 BACKEND:
 cd backend
-
-docker-compose up // builds a venv and runs the server
-
-Install Packages:
-1) pip install django
-2) pip install djangorestframework
-3) pip install geopy
-4) sudo apt-get install binutils libproj-dev gdal-bin
-5) pip install channels
-6) pip install daphne
-7) python3 -m pip install channels_redis
-8) pip install pandas
-9) pip install django-extensions 
-10) pip install geopandas
-pip install djangorestframework-simplejwt
-
-Run Server:
-sudo docker run -p 6379:6379 -d redis:5
-py manage.py runserver
+docker-compose up --build // builds a venv and runs the server
 
 FRONTEND:
 cd frontend
